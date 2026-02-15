@@ -1,0 +1,206 @@
+/* ===== Global ===== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0f172a;
+    color: #f1f5f9;
+    margin: 0;
+}
+
+/* ===== Hero Section ===== */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px 30px;
+    background: linear-gradient(90deg, #1e293b, #111827);
+    gap: 15px;
+}
+
+.hero-left h1 {
+    font-size: 28px;
+    margin: 0;
+    color: #22d3ee; /* cyan */
+}
+
+.hero-left p {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+.hero-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.hero-actions button {
+    background: #1e293b;
+    border: none;
+    color: #f1f5f9;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+
+.hero-actions button:hover {
+    background: #334155;
+}
+
+/* ===== Search ===== */
+.hero-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #1e293b;
+    padding: 6px 10px;
+    border-radius: 12px;
+}
+
+.hero-search i {
+    margin-right: 6px;
+    color: #94a3b8;
+}
+
+.hero-search input {
+    border: none;
+    background: transparent;
+    color: #f1f5f9;
+    outline: none;
+    width: 150px;
+}
+
+.suggestions {
+    position: absolute;
+    top: 36px;
+    left: 0;
+    width: 100%;
+    background: #111827;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 8px;
+    max-height: 180px;
+    overflow-y: auto;
+    display: none;
+    z-index: 10;
+}
+
+.suggestions li {
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.suggestions li:hover {
+    background: #334155;
+}
+
+/* ===== Filter & Sort ===== */
+.hero-filters select {
+    background: #1e293b;
+    border: none;
+    border-radius: 8px;
+    color: #f1f5f9;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.hero-filters select:hover {
+    background: #334155;
+}
+
+/* ===== Dashboard Grid ===== */
+.dashboard-grid {
+    padding: 20px 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* ===== Pool Card ===== */
+.pool-card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s;
+}
+
+.pool-card:hover {
+    transform: translateY(-4px);
+}
+
+.pool-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.pool-header .symbol {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+}
+
+.pool-header .symbol img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #22d3ee;
+}
+
+.meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    opacity: 0.8;
+    margin-top: 8px;
+}
+
+.label {
+    opacity: 0.6;
+    font-size: 12px;
+}
+
+/* ===== Status ===== */
+.status-ok { color: #2ecc71; }
+.status-error { color: #e74c3c; }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .hero-left h1 { font-size: 22px; }
+    .hero-left p { font-size: 12px; }
+    .hero-search input { width: 120px; }
+}
+
+/* ===== ICON ANIMATION ===== */
+.spin {
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Smooth hover */
+.hero-actions button i {
+    transition: transform 0.2s ease;
+}
