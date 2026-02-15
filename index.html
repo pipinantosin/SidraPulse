@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SidraPulse - Monitor Semua Token & Pool di Sidra DEX</title>
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+</head>
+<body>
+
+<!-- ===== Hero Section ===== -->
+<header class="hero">
+    <div class="hero-left">
+        <h1>SidraPulse</h1>
+        <p>Monitor Semua Token & Pool di Sidra DEX</p>
+    </div>
+    <div class="hero-right">
+        <div class="hero-actions">
+            <button id="refresh-btn" title="Refresh">
+    <i class="fas fa-sync-alt"></i>
+</button>
+
+<button id="toggle-refresh" title="Pause Auto Refresh">
+    <i class="fas fa-pause"></i>
+</button>
+
+        </div>
+        <div class="hero-search">
+            <i class="fas fa-search"></i>
+            <input type="text" id="pair-search" placeholder="Cari pair...">
+            <ul id="search-suggestions" class="suggestions"></ul>
+        </div>
+        <div class="hero-filters">
+            <select id="pool-filter">
+                <option value="all">Semua Pool</option>
+            </select>
+            <select id="pool-sort">
+                <option value="price-desc">Harga ↓</option>
+                <option value="price-asc">Harga ↑</option>
+                <option value="liquidity-desc">Likuiditas ↓</option>
+                <option value="liquidity-asc">Likuiditas ↑</option>
+            </select>
+        </div>
+    </div>
+</header>
+
+<!-- ===== Dashboard ===== -->
+<main>
+    <div id="dashboard" class="dashboard-grid"></div>
+</main>
+
+<!-- ===== JS Dependencies ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/abi.js"></script>
+<script src="js/price.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/search-suggest.js"></script>
+
+</body>
+</html>
