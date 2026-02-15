@@ -1,0 +1,250 @@
+[
+  {
+    "name": "ARMS-WSDA",
+    "symbol": "ARMS/WSDA",
+    "address": "0xF779943822CA0c9C8d5486aF78b9A001abc03b44",
+    "description": "ARMS token paired with Wrapped SDA",
+    "icon0": "arms.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "WSDA-USDT",
+    "symbol": "WSDA/USDT",
+    "address": "0x0000000000000000000000000000000000000000",
+    "description": "Wrapped SDA paired with USDT",
+    "icon0": "wsda.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "FREE-WSDA",
+    "symbol": "FREE/WSDA",
+    "address": "0x3A3dFbd0d6116f0D4ed26d1E2717c2c800aeeF58",
+    "description": "Freelancium token paired with Wrapped SDA",
+    "icon0": "free.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "GLNs-WSDA",
+    "symbol": "GLNs/WSDA",
+    "address": "0x5162ac7E6BA188bBA91db039992A8C7e5dBc780d",
+    "description": "Global Logistics Network token paired with Wrapped SDA",
+    "icon0": "glns.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "AIR-WSDA",
+    "symbol": "AIR/WSDA",
+    "address": "0x9B061c53f6e71ADb12e8F6AA75D1f218e6FA2E95",
+    "description": "AirLand token paired with Wrapped SDA",
+    "icon0": "air.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "GPC-WSDA",
+    "symbol": "GPC/WSDA",
+    "address": "0x52E09759dC1021BAc82a19777D61b9BB1fF0460B",
+    "description": "GLN Property Chain token paired with Wrapped SDA",
+    "icon0": "gpc.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "SIT-WSDA",
+    "symbol": "SIT/WSDA",
+    "address": "0xC21a15e83d171E95621Fa979bE35B1c5ad954dbA",
+    "description": "SIDRA ToGo token paired with Wrapped SDA",
+    "icon0": "sit.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "SGWA-WSDA",
+    "symbol": "SGWA/WSDA",
+    "address": "0x2fe4AC390afC5675532aeF4A2a0aFC1f870B7791",
+    "description": "Gemworld token paired with Wrapped SDA",
+    "icon0": "sgwa.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "FBAY-WSDA",
+    "symbol": "FBAY/WSDA",
+    "address": "0x9DBEbeC4B2A01Afe3A42D069aB07be9bf15e6746",
+    "description": "FALCONBAY token paired with Wrapped SDA",
+    "icon0": "fbay.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "SLND-WSDA",
+    "symbol": "SLND/WSDA",
+    "address": "0xd358618EB2c67A1ab1b39c0B9e7B0E36Bf21C7F8",
+    "description": "SidraLand token paired with Wrapped SDA",
+    "icon0": "slnd.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "DBI-WSDA",
+    "symbol": "DBI/WSDA",
+    "address": "0xD7eA98A1F45f042DBa3FA10a89092bddF943719a",
+    "description": "Digital Banking Initiative token paired with Wrapped SDA",
+    "icon0": "dbi.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "SDS-WSDA",
+    "symbol": "SDS/WSDA",
+    "address": "0x9C9CC46ba9d4F7Bd90c0b46252962Fe3BFDC9ceE",
+    "description": "Sidra Digital School token paired with Wrapped SDA",
+    "icon0": "sds.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "SMAF-WSDA",
+    "symbol": "SMAF/WSDA",
+    "address": "0x2EcE60dAaC7d8A26C48e9161E6Bbe7106bfB9f05",
+    "description": "Smart Finance Mentorship token paired with Wrapped SDA",
+    "icon0": "smaf.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "ZSM-WSDA",
+    "symbol": "ZSM/WSDA",
+    "address": "0x4b68FbA4080B60667D85a923E84B3214aed4b3A4",
+    "description": "Zekat Stabil Islamic Money token paired with Wrapped SDA",
+    "icon0": "zsm.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "EWM-WSDA",
+    "symbol": "EWM/WSDA",
+    "address": "0xdD6B71ECF74D490fddA2F94A6B676e2726CEa4dC",
+    "description": "Ewave Market token paired with Wrapped SDA",
+    "icon0": "ewm.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "WPX-WSDA",
+    "symbol": "WPX/WSDA",
+    "address": "0x5298ED19B27045E22058E1D58264c3D05958f457",
+    "description": "widpnix token paired with Wrapped SDA",
+    "icon0": "wpx.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "STSX-WSDA",
+    "symbol": "STSX/WSDA",
+    "address": "0x5c585f59dB18deF8C58315A030bD8d7493921573",
+    "description": "Sidra Travel Safari token paired with Wrapped SDA",
+    "icon0": "stsx.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "VPA-WSDA",
+    "symbol": "VPA/WSDA",
+    "address": "0x3dCEF48D84e9b9757E743F43a2F9D8cE0e033118",
+    "description": "VPAWord token paired with Wrapped SDA",
+    "icon0": "vpa.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "HEC-WSDA",
+    "symbol": "HEC/WSDA",
+    "address": "0x7e17671Cc36a62c80cAe98E1986c1e0A20bCe5b7",
+    "description": "Halal Ecommerce token paired with Wrapped SDA",
+    "icon0": "hec.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "IDM-WSDA",
+    "symbol": "IDM/WSDA",
+    "address": "0xCd5A24dc493E79851AF8Ec423d7e669a61877f94",
+    "description": "Innovative Digital Marketplace token paired with Wrapped SDA",
+    "icon0": "idm.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "LNH-WSDA",
+    "symbol": "LNH/WSDA",
+    "address": "0x8c12d43691829B08911155966cB1C8Ee5451d8F4",
+    "description": "Luxury Nursing Home token paired with Wrapped SDA",
+    "icon0": "lnh.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "SKMH-WSDA",
+    "symbol": "SKMH/WSDA",
+    "address": "0x19Ce764Bb7F979B89c1c5D238Adc3cb0c40F2ff9",
+    "description": "Sukoon Mind Horizon token paired with Wrapped SDA",
+    "icon0": "skmh.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "CSF-WSDA",
+    "symbol": "CSF/WSDA",
+    "address": "0x4d8082dFBb5a6641a64BF26a716ED6D9b73dDa3A",
+    "description": "Centre Salmanoul Farissy token paired with Wrapped SDA",
+    "icon0": "csf.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "DAN-WSDA",
+    "symbol": "DAN/WSDA",
+    "address": "0x9ceaA0C6e28d876041F20E253a9b6A4328Bd1Ce6",
+    "description": "D Agribusiness Network token paired with Wrapped SDA",
+    "icon0": "dan.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "MBF-WSDA",
+    "symbol": "MBF/WSDA",
+    "address": "0x01Fb5666dCF3f0ECB990E2648b2fd8C90516A75e",
+    "description": "EBMOF token paired with Wrapped SDA",
+    "icon0": "mbf.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "TRL-WSDA",
+    "symbol": "TRL/WSDA",
+    "address": "0x6eD0bbDd67E4893A5D5802102477f53A788432f3",
+    "description": "TRL LIRA token paired with Wrapped SDA",
+    "icon0": "trl.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "VPD-WSDA",
+    "symbol": "VPD/WSDA",
+    "address": "0x8450047b59c01842F424Ee2ddD42D4EFb5C30038",
+    "description": "Dining Platform Halal token paired with Wrapped SDA",
+    "icon0": "vpd.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "VLCP-WSDA",
+    "symbol": "VLCP/WSDA",
+    "address": "0x41dBEF0e85EC081dF81eF227c6dDDcf8ec983D3B",
+    "description": "VL Community Platform token paired with Wrapped SDA",
+    "icon0": "vlcp.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "TAP-WSDA",
+    "symbol": "TAP/WSDA",
+    "address": "0xf204777A2F07C1C54f4F98dceF1255e55339652e",
+    "description": "TaskMorph AI Power token paired with Wrapped SDA",
+    "icon0": "tap.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "VPM-WSDA",
+    "symbol": "VPM/WSDA",
+    "address": "0x1De3952060eF06005c16fE5cD3272Edc3136f0D8",
+    "description": "VPM ecosystem token paired with Wrapped SDA",
+    "icon0": "vpm.png",
+    "icon1": "wsda.png"
+  },
+  {
+    "name": "VMB-WSDA",
+    "symbol": "VMB/WSDA",
+    "address": "0x8267f9c75afeaa954bBFBfA43565E56F7AD956e5",
+    "description": "Global Airline Tickets token paired with Wrapped SDA",
+    "icon0": "vmb.png",
+    "icon1": "wsda.png"
+  }
+]
