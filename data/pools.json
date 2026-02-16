@@ -8,14 +8,6 @@
     "icon1": "wsda.png"
   },
   {
-    "name": "WSDA-USDT",
-    "symbol": "WSDA/USDT",
-    "address": "0x0000000000000000000000000000000000000000",
-    "description": "Wrapped SDA paired with USDT",
-    "icon0": "wsda.png",
-    "icon1": "wsda.png"
-  },
-  {
     "name": "FREE-WSDA",
     "symbol": "FREE/WSDA",
     "address": "0x3A3dFbd0d6116f0D4ed26d1E2717c2c800aeeF58",
