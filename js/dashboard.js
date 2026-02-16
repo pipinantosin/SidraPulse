@@ -12,6 +12,32 @@ let autoRefresh = true;
 let refreshInterval = null;
 
 /* =====================================================
+   UTILITY: FORMAT LIQUIDITY (lama)
+===================================================== */
+function formatLiquidity(num) {
+    if (num === null || num === undefined) return "-";
+    if (num < 1_000) return num.toFixed(2);
+    if (num < 1_000_000) return (num / 1_000).toFixed(2) + "K";
+    if (num < 1_000_000_000) return (num / 1_000_000).toFixed(2) + "M";
+    return (num / 1_000_000_000).toFixed(2) + "B";
+}
+
+/* =====================================================
+   UTILITY: FORMAT LIQUIDITY SCALED (baru)
+   Menggeser angka besar pool Sidra DEX ke ribuan/M/B
+===================================================== */
+function formatLiquidityScaled(num, scale = 1e12) {
+    if (!num) return "-";
+    const scaled = num / scale;
+
+    if (scaled < 1_000) return scaled.toFixed(2);
+    if (scaled < 1_000_000) return (scaled / 1_000).toFixed(2) + "K";
+    if (scaled < 1_000_000_000) return (scaled / 1_000_000).toFixed(2) + "M";
+    return (scaled / 1_000_000_000).toFixed(2) + "K";
+}
+
+
+/* =====================================================
    LOAD POOLS JSON
 ===================================================== */
 async function loadPools() {
@@ -106,8 +132,8 @@ async function updateDashboard() {
 
         if (sortValue === "price-desc") return pa - pb;
         if (sortValue === "price-asc") return pb - pa;
-        if (sortValue === "liquidity-desc") return lb - la;
-        if (sortValue === "liquidity-asc") return la - lb;
+        if (sortValue === "liquidity-desc") return la - lb;
+        if (sortValue === "liquidity-asc") return lb - la;
 
         return 0;
     });
@@ -131,7 +157,8 @@ async function updateDashboard() {
                 Number(data.price).toFixed(8) + " SDA";
 
             card.querySelector(".liquidity").textContent =
-                data.liquidity;
+    formatLiquidityScaled(data.liquidity);
+
 
             container.appendChild(card); // reorder without recreate
 
@@ -154,7 +181,6 @@ async function updateDashboard() {
    CREATE POOL CARD (SIMPLIFIED - SINGLE TOKEN UI)
 ===================================================== */
 function createCard(poolInfo, liveData) {
-
     const div = document.createElement("div");
     div.className = "pool-card";
 
@@ -163,18 +189,14 @@ function createCard(poolInfo, liveData) {
         return div;
     }
 
-    // Ambil token utama (sebelum /WSDA)
     const tokenName = poolInfo.symbol.split("/")[0];
-
-    // Harga selalu tampil dalam SDA (UI only)
     const price = Number(liveData.price || 0).toFixed(8);
-
+    const liquidity = formatLiquidityScaled(liveData.liquidity);
     const volume24h = liveData.volume24h || "$0";
     const tvl = liveData.tvl || "$0";
 
     div.innerHTML = `
         <div class="pool-header">
-
             <div class="token-info">
                 <img src="icons/${poolInfo.icon0}" class="token-logo"/>
                 <div>
@@ -182,36 +204,19 @@ function createCard(poolInfo, liveData) {
                     <div class="price">${price} SDA</div>
                 </div>
             </div>
-
         </div>
 
         <div class="meta">
-
-            <div>
-                <div class="label">Liquidity</div>
-                <div class="liquidity">${liveData.liquidity}</div>
-            </div>
-
-            <div>
-                <div class="label">24H Volume</div>
-                <div>${volume24h}</div>
-            </div>
-
-            <div>
-                <div class="label">TVL</div>
-                <div>${tvl}</div>
-            </div>
-
+            <div><div class="label">Liquidity</div><div class="liquidity">${liquidity}</div></div>
+            <div><div class="label">24H Volume</div><div>${volume24h}</div></div>
+            <div><div class="label">TVL</div><div>${tvl}</div></div>
         </div>
 
-        <div class="mini-chart">
-            <div class="chart-line"></div>
-        </div>
+        <div class="mini-chart"><div class="chart-line"></div></div>
     `;
 
     return div;
 }
-
 
 /* =====================================================
    SEARCH FILTER BY SYMBOL
