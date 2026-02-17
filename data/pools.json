@@ -8,11 +8,11 @@
     "icon1": "wsda.png"
   },
   {
-    "name": "FREE-WSDA",
-    "symbol": "FREE/WSDA",
+    "name": "FREEt-WSDA",
+    "symbol": "FREEt/WSDA",
     "address": "0x3A3dFbd0d6116f0D4ed26d1E2717c2c800aeeF58",
     "description": "Freelancium token paired with Wrapped SDA",
-    "icon0": "free.png",
+    "icon0": "freet.png",
     "icon1": "wsda.png"
   },
   {
