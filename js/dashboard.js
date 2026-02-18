@@ -124,32 +124,36 @@ async function updateDashboard() {
     // SORT REAL NUMERIC (NO FORMAT HERE)
     results.sort((a, b) => {
 
-        const pa = Number(a.data?.price ?? 0);
-        const pb = Number(b.data?.price ?? 0);
+    const pa = Number(a.data?.price ?? 0);
+    const pb = Number(b.data?.price ?? 0);
 
-        const la = Number(a.data?.liquidity ?? 0);
-        const lb = Number(b.data?.liquidity ?? 0);
+    const la = Number(a.data?.liquidity ?? 0);
+    const lb = Number(b.data?.liquidity ?? 0);
 
-        if (sortValue === "price-desc") return pa - pb;
-        if (sortValue === "price-asc") return pb - pa;
-        if (sortValue === "liquidity-desc") return la - lb;
-        if (sortValue === "liquidity-asc") return lb - la;
+    if (sortValue === "price-desc") return pb - pa;
+    if (sortValue === "price-asc") return pa - pb;
+    if (sortValue === "liquidity-desc") return lb - la;
+    if (sortValue === "liquidity-asc") return la - lb;
 
-        return 0;
-    });
+    return 0;
+});
 
     const container = document.getElementById("dashboard");
 
-    results.forEach(({ pool, data }) => {
+    results.forEach(({ pool, data }, index) => {
 
         if (!poolCards.has(pool.address)) {
-            const card = createCard(pool, data);
+            const card = createCard(pool, data, index);
             container.appendChild(card);
             poolCards.set(pool.address, card);
             return;
         }
 
         const card = poolCards.get(pool.address);
+        const rank = card.querySelector(".rank-badge");
+if (rank) {
+    rank.textContent = "#" + (index + 1);
+}
 
         if (!data.error) {
 
@@ -157,7 +161,7 @@ async function updateDashboard() {
                 Number(data.price).toFixed(8) + " SDA";
 
             card.querySelector(".liquidity").textContent =
-    formatLiquidityScaled(data.liquidity);
+    SIDRAPULSE.formatLiquidity(data.liquidity);
 
 
             container.appendChild(card); // reorder without recreate
@@ -180,12 +184,15 @@ async function updateDashboard() {
 /* =====================================================
    CREATE POOL CARD (SIMPLIFIED - SINGLE TOKEN UI)
 ===================================================== */
-function createCard(poolInfo, liveData) {
+function createCard(poolInfo, liveData, index = 0) {
     const div = document.createElement("div");
     div.className = "pool-card";
 
     if (!liveData || liveData.error) {
-        div.innerHTML = `<div class="status-error">Error loading pool</div>`;
+        div.innerHTML = `
+    <div class="rank-badge">#${index + 1}</div>
+    <div class="status-error">Error loading pool</div>
+`;
         return div;
     }
 
@@ -196,24 +203,35 @@ function createCard(poolInfo, liveData) {
     const tvl = liveData.tvl || "$0";
 
     div.innerHTML = `
-        <div class="pool-header">
-            <div class="token-info">
-                <img src="icons/${poolInfo.icon0}" class="token-logo"/>
-                <div>
-                    <div class="token-name">${tokenName}</div>
-                    <div class="price">${price} SDA</div>
-                </div>
+    <div class="rank-badge">#${index + 1}</div>
+
+    <div class="pool-header">
+        <div class="token-info">
+            <img src="icons/${poolInfo.icon0}" class="token-logo"/>
+            <div>
+                <div class="token-name">${tokenName}</div>
+                <div class="price">${price} SDA</div>
             </div>
         </div>
+    </div>
 
-        <div class="meta">
-            <div><div class="label">Liquidity</div><div class="liquidity">${liquidity}</div></div>
-            <div><div class="label">24H Volume</div><div>${volume24h}</div></div>
-            <div><div class="label">TVL</div><div>${tvl}</div></div>
+    <div class="meta">
+        <div>
+            <div class="label">Liquidity</div>
+            <div class="liquidity">${liquidity}</div>
         </div>
+        <div>
+            <div class="label">24H Volume</div>
+            <div>${volume24h}</div>
+        </div>
+        <div>
+            <div class="label">TVL</div>
+            <div>${tvl}</div>
+        </div>
+    </div>
+`;
 
-        <div class="mini-chart"><div class="chart-line"></div></div>
-    `;
+
 
     return div;
 }
