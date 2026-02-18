@@ -1,124 +1,93 @@
-/**
- * =====================================================
- * SIDRAPULSE PRICE ENGINE - STABLE VERSION
- * =====================================================
- * - Retry system
- * - Timeout protection
- * - Last good value cache
- * - Safe BigInt calculation
- * - No more random 0 price
- * =====================================================
- */
+/* =====================================================
+   SIDRAPULSE PRICE ENGINE (Refactored)
+===================================================== */
 
 const POOL_CACHE = new Map();
-const REQUEST_TIMEOUT = 10000; // 10s timeout
-const MAX_RETRY = 2;
 
-/* ================================================
-   Utility: Timeout Promise
-================================================ */
-function withTimeout(promise, ms) {
-    return Promise.race([
-        promise,
-        new Promise((_, reject) =>
-            setTimeout(() => reject(new Error("Timeout")), ms)
-        )
-    ]);
-}
+async function fetchPoolData(poolAddress) {
 
-/* ================================================
-   Fetch Pool Data (Stable + Retry)
-================================================ */
-async function fetchPoolData(poolAddress, retry = 0) {
+    const { provider, withTimeout, withRetry, pow10 } = SIDRAPULSE;
 
     try {
 
-        const pool = new ethers.Contract(poolAddress, POOL_ABI, provider);
+        return await withRetry(async () => {
 
-        const [slot0, token0Addr, token1Addr, liquidityBN] =
-            await withTimeout(
-                Promise.all([
-                    pool.slot0(),
-                    pool.token0(),
-                    pool.token1(),
-                    pool.liquidity()
-                ]),
-                REQUEST_TIMEOUT
+            const pool = new ethers.Contract(poolAddress, POOL_ABI, provider);
+
+            const [slot0, token0Addr, token1Addr, liquidityBN] =
+                await withTimeout(
+                    Promise.all([
+                        pool.slot0(),
+                        pool.token0(),
+                        pool.token1(),
+                        pool.liquidity()
+                    ])
+                );
+
+            const token0 = new ethers.Contract(token0Addr, ERC20_ABI, provider);
+            const token1 = new ethers.Contract(token1Addr, ERC20_ABI, provider);
+
+            const [dec0, dec1, sym0, sym1] =
+                await withTimeout(
+                    Promise.all([
+                        token0.decimals(),
+                        token1.decimals(),
+                        token0.symbol(),
+                        token1.symbol()
+                    ])
+                );
+
+            const price = calculatePrice(
+                slot0.sqrtPriceX96,
+                dec0,
+                dec1
             );
 
-        const token0 = new ethers.Contract(token0Addr, ERC20_ABI, provider);
-        const token1 = new ethers.Contract(token1Addr, ERC20_ABI, provider);
+            const result = {
+                token0: sym0,
+                token1: sym1,
+                price,
+                liquidity: liquidityBN.toString()
+            };
 
-        const [dec0, dec1, sym0, sym1] =
-            await withTimeout(
-                Promise.all([
-                    token0.decimals(),
-                    token1.decimals(),
-                    token0.symbol(),
-                    token1.symbol()
-                ]),
-                REQUEST_TIMEOUT
-            );
+            POOL_CACHE.set(poolAddress, result);
 
-        const price = calculatePrice(slot0[0], dec0, dec1);
-
-        const result = {
-            token0: sym0 || "Token0",
-            token1: sym1 || "Token1",
-            price: price,
-            liquidity: Number(liquidityBN.toString())
-        };
-
-        // Save last good result
-        POOL_CACHE.set(poolAddress, result);
-
-        return result;
+            return result;
+        });
 
     } catch (err) {
 
-        console.warn("Pool fetch error:", poolAddress, err.message);
-
-        // Retry if possible
-        if (retry < MAX_RETRY) {
-            console.log("Retrying...", retry + 1);
-            return fetchPoolData(poolAddress, retry + 1);
-        }
-
-        // If failed, return last known good data
         if (POOL_CACHE.has(poolAddress)) {
-            console.warn("Using cached value for:", poolAddress);
             return POOL_CACHE.get(poolAddress);
         }
 
-        // Absolute fallback (rare)
-        return {
-            token0: "Token0",
-            token1: "Token1",
-            price: null,
-            liquidity: null,
-            error: true
-        };
+        return { error: true };
     }
 }
 
-/* ================================================
-   Calculate Price (Safe BigInt)
-================================================ */
+/* =============================
+   SAFE PRICE CALCULATION
+============================= */
 function calculatePrice(sqrtPriceX96, dec0, dec1) {
-    try {
-        const sqrtBN = BigInt(sqrtPriceX96.toString());
 
-        const numerator = sqrtBN * sqrtBN * BigInt(10 ** dec0);
+    try {
+
+        const sqrt = BigInt(sqrtPriceX96.toString());
+
+        const numerator =
+            sqrt * sqrt * SIDRAPULSE.pow10(dec0);
+
         const denominator = 2n ** 192n;
 
         const priceBN = numerator / denominator;
 
-        const price = Number(priceBN) / 10 ** dec1;
+        const price =
+            Number(priceBN) /
+            Number(SIDRAPULSE.pow10(dec1));
 
         return Number(price.toFixed(8));
 
-    } catch (e) {
-        console.error("Price calculation error:", e);
+    } catch {
         return null;
     }
 }
