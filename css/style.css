@@ -219,53 +219,139 @@ body {
 }
 
 
-/* ===== SPLASH ===== */
-#splash-screen {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    flex-direction: column;
-    transition: opacity 0.6s ease;
-}
+/* =========================
+   SORT SELECT AWESOME STYLE
+========================= */
 
-#splash-screen.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.splash-content {
-    text-align: center;
-}
-
-.splash-logo {
-    width: 140px;
-    margin-bottom: 30px;
-    animation: pulse 2s infinite ease-in-out;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.08); opacity: 0.85; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-.progress-circle {
+.sort-wrapper {
     position: relative;
-    width: 140px;
-    height: 140px;
+    display: inline-block;
 }
 
-.progress-text {
+.sort-select {
+    appearance: none;
+    background: #1e293b;
+    color: #f1f5f9;
+    border: 1px solid #334155;
+    padding: 8px 40px 8px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sort-select:hover {
+    border-color: #22d3ee;
+    box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: #22d3ee;
+}
+
+.sort-icon {
     position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 20px;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #94a3b8;
+}
+
+.rank-badge {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 20px;
+}
+
+.pool-card {
+    position: relative;
+}
+
+/* ==============================
+   SEARCH WRAPPER (FLOAT FIX)
+============================== */
+.hero-search-wrapper {
+    position: relative;
+}
+
+/* ==============================
+   SEARCH ICONS
+============================== */
+.search-icon {
+    font-size: 13px;
+    margin-right: 8px;
+    opacity: 0.6;
+}
+
+.clear-search {
+    font-size: 14px;
+    margin-left: 8px;
+    cursor: pointer;
+    opacity: 0;
+    transition: 0.2s ease;
+}
+
+.hero-search:hover .clear-search {
+    opacity: 0.6;
+}
+
+.clear-search:hover {
+    opacity: 1;
     color: #22d3ee;
+}
+
+/* ==============================
+   SUGGESTION DROPDOWN
+============================== */
+.search-suggestions {
+    position: absolute;
+    top: 115%;
+    left: 0;
+    width: 100%;
+    list-style: none;
+    padding: 8px;
+    margin: 8px 0 0;
+    border-radius: 16px;
+
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+
+    max-height: 260px;
+    overflow-y: auto;
+
+    display: none;
+    z-index: 999;
+}
+
+.search-suggestions li {
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.search-suggestions li:hover {
+    background: linear-gradient(90deg, rgba(34,211,238,0.2), rgba(91,140,255,0.2));
+    color: #22d3ee;
+}
+
+/* Scrollbar modern */
+.search-suggestions::-webkit-scrollbar {
+    width: 6px;
+}
+.search-suggestions::-webkit-scrollbar-thumb {
+    background: #22d3ee;
+    border-radius: 10px;
 }
