@@ -207,7 +207,10 @@ function createCard(poolInfo, liveData, index = 0) {
 
     <div class="pool-header">
         <div class="token-info">
-            <img src="icons/${poolInfo.icon0}" class="token-logo"/>
+            <div class="pair-logos">
+    <img src="icons/${poolInfo.icon0}" class="token-logo primary"/>
+    <img src="icons/${poolInfo.icon1}" class="token-logo secondary"/>
+</div>
             <div>
                 <div class="token-name">${tokenName}</div>
                 <div class="price">${price} SDA</div>
