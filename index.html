@@ -7,6 +7,7 @@
 
 <!-- CSS -->
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/splash.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 </head>
@@ -64,12 +65,16 @@
             <select id="pool-filter">
                 <option value="all">Semua Pool</option>
             </select>
-            <select id="pool-sort">
-                <option value="price-asc">Harga ↑</option>
-                <option value="price-desc">Harga ↓</option>
-                <option value="liquidity-asc">Likuiditas ↑</option>
-                <option value="liquidity-desc">Likuiditas ↓</option>
-            </select>
+            <div class="sort-wrapper">
+    <select id="pool-sort" class="sort-select">
+        <option value="price-desc">💰 Harga Tertinggi</option>
+        <option value="price-asc">💰 Harga Terendah</option>
+        <option value="liquidity-desc">💧 Likuiditas Tertinggi</option>
+        <option value="liquidity-asc">💧 Likuiditas Terendah</option>
+    </select>
+    <i class="fas fa-sort sort-icon"></i>
+</div>
+
         </div>
     </div>
 </header>
@@ -80,13 +85,15 @@
 </main>
 
 <!-- ===== JS Dependencies ===== -->
-<script src="js/splash.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
-<script src="js/config.js"></script>
+
+<script src="js/core.js"></script>
 <script src="js/abi.js"></script>
 <script src="js/price.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/search-suggest.js"></script>
+<script src="js/splash.js"></script>
+
 
 </body>
 </html>
