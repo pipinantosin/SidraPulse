@@ -218,6 +218,38 @@ body {
     color: #36d7ff;
 }
 
+/* =========================
+   PAIR LOGO FIXED OVERLAP
+========================= */
+
+.pair-logos {
+    position: relative;
+    width: 56px;
+    height: 36px;
+}
+
+.token-logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #0b0f1a;
+    background: #111827;
+    position: absolute;
+    transition: 0.2s ease;
+}
+
+/* Logo kiri */
+.token-logo.primary {
+    left: 0;
+    z-index: 2;
+}
+
+/* Logo kanan (SDA) */
+.token-logo.secondary {
+    left: 22px;   /* 🔥 ini bikin tidak tenggelam */
+    z-index: 1;
+}
 
 /* =========================
    SORT SELECT AWESOME STYLE
