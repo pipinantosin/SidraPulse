@@ -1,0 +1,270 @@
+/* =====================================================
+   HERO FILTER - BLUE THEME VERSION
+===================================================== */
+
+/* ================= BODY (LUAR HEADER & CARD HITAM) ================= */
+
+body {
+    background: #0b1220; /* hitam biru gelap */
+    color: #e2e8f0;
+}
+
+/* ================= STICKY HERO ================= */
+
+.hero {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    padding: 14px 20px;
+
+    background: linear-gradient(90deg, #0f1c3f, #142a66);
+    border-bottom: 1px solid rgba(59,130,246,0.4);
+}
+
+/* ================= LEFT ================= */
+
+.hero-left h1 {
+    font-size: 20px;
+    margin: 0;
+    font-weight: 700;
+    color: #60a5fa; /* biru terang */
+    letter-spacing: 0.5px;
+}
+
+.hero-left p {
+    font-size: 12px;
+    margin-top: 3px;
+    color: #cbd5e1;
+    opacity: 0.85;
+}
+
+/* ================= RIGHT ================= */
+
+.hero-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* ================= BUTTON ================= */
+
+.hero-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.hero-actions button {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid rgba(59,130,246,0.4);
+    background: rgba(15,23,42,0.6);
+    color: #93c5fd;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.hero-actions button:hover {
+    background: rgba(59,130,246,0.2);
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+/* ================= SEARCH ================= */
+
+.hero-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    background: rgba(15,23,42,0.6);
+    border: 1px solid rgba(59,130,246,0.4);
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.hero-search i {
+    font-size: 12px;
+    color: #93c5fd;
+}
+
+.hero-search input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-size: 12px;
+    width: 150px;
+}
+
+/* ================= SUGGESTIONS ================= */
+
+.suggestions {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border: 1px solid #3b82f6;
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 999;
+}
+
+.suggestions li {
+    padding: 8px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.suggestions li:hover {
+    background: rgba(59,130,246,0.2);
+    color: #60a5fa;
+}
+
+/* ================= FILTER GROUP ================= */
+
+.hero-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* LABEL */
+
+.select-wrapper {
+    display: flex;
+    flex-direction: column;
+    font-size: 10px;
+    color: #bfdbfe;
+}
+
+.select-wrapper label {
+    margin-bottom: 2px;
+}
+
+/* ================= SELECT ================= */
+
+.select-wrapper select,
+.sort-select {
+    background: rgba(15,23,42,0.6);
+    border: 1px solid rgba(59,130,246,0.5);
+    color: #ffffff;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    min-width: 120px;
+}
+
+.select-wrapper select:focus,
+.sort-select:focus {
+    outline: none;
+    border-color: #60a5fa;
+    box-shadow: 0 0 6px rgba(59,130,246,0.4);
+}
+
+/* ================= BASE DROPDOWN ================= */
+
+.custom-dropdown {
+    position: relative;
+    width: 120px;
+}
+
+.dropdown-selected {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(15,23,42,0.6);
+    border: 1px solid rgba(59,130,246,0.5);
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.dropdown-selected img {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.dropdown-options {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    border: 1px solid #3b82f6;
+    border-radius: 6px;
+    display: none;
+    flex-direction: column;
+    max-height: 180px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.dropdown-item {
+    padding: 6px 8px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.dropdown-item img {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.dropdown-item:hover {
+    background: rgba(59,130,246,0.2);
+    color: #60a5fa;
+}
+
+/* ================= SORT ICON ================= */
+
+.sort-wrapper {
+    position: relative;
+}
+
+.sort-icon {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    color: #93c5fd;
+    pointer-events: none;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+    .hero {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .hero-right {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .hero-search input {
+        width: 120px;
+    }
+}
