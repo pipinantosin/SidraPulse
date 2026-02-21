@@ -238,5 +238,21 @@
     "description": "Global Airline Tickets token paired with Wrapped SDA",
     "icon0": "vmb.png",
     "icon1": "wsda.png"
+  },
+   {
+    "name": "AIR-FREEt",
+    "symbol": "AIR/FREEt",
+    "address": "0xaaa6fcc69d955c6a3c3a9f0d0135c9467178209d",
+    "description": "AirLand paired with Freelancium",
+    "icon0": "air.png",
+    "icon1": "freet.png"
+  },
+    {
+    "name": "FREEt-GLNs",
+    "symbol": "FREEt/GLNs",
+    "address": "0xe6d96a10a749569f4B78F82ba51a8A9591ACbbA5",
+    "description": "Freelancium paired with Global Logistics Network",
+    "icon0": "freet.png",
+    "icon1": "glns.png"
   }
 ]
