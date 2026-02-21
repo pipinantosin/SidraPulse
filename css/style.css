@@ -1,178 +1,389 @@
 /* =====================================================
-   GRID MINI
+   SIDRAPULSE PREMIUM WEB3 UI
 ===================================================== */
 
-.dashboard-grid {
-    padding: 20px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    background: #0b1220; /* luar hitam */
+/* ===== GLOBAL ===== */
+body {
+    margin: 0;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: #f1f5f9;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(34,211,238,0.08), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(91,140,255,0.08), transparent 40%),
+        #0b0f1a;
 }
 
-/* =====================================================
-   CARD - BLUE THEME
-===================================================== */
+/* ===== HERO ===== */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 
+    padding: 25px 40px;
+
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.hero-left h1 {
+    margin: 0;
+    font-size: 30px;
+    background: linear-gradient(90deg, #22d3ee, #5b8cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-left p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.hero-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* ===== BUTTONS ===== */
+.hero-actions button {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.hero-actions button:hover {
+    box-shadow: 0 0 15px rgba(34,211,238,0.4);
+}
+
+/* ===== SEARCH ===== */
+.hero-search {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.05);
+    padding: 8px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.hero-search input {
+    border: none;
+    background: transparent;
+    color: white;
+    outline: none;
+    width: 160px;
+}
+
+/* ===== SELECT ===== */
+.hero-filters select {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+/* ===== GRID ===== */
+.dashboard-grid {
+    padding: 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+/* ===== POOL CARD ===== */
 .pool-card {
-    background: linear-gradient(145deg, #132042, #1b2f6b);
-    border: 1px solid rgba(59,130,246,0.35);
-    padding: 16px;
-    border-radius: 16px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 24px;
+    border-radius: 22px;
     transition: all 0.25s ease;
+    position: relative;
 }
 
 .pool-card:hover {
-    box-shadow: 0 0 18px rgba(59,130,246,0.35);
-    transform: translateY(-3px);
+    transform: translateY(-6px);
+    box-shadow: 0 0 35px rgba(91,140,255,0.25);
 }
 
-/* =====================================================
-   HEADER LAYOUT
-===================================================== */
-
+/* ===== HEADER ===== */
 .pool-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
-/* LEFT SIDE (rank + logo + name) */
+.symbol {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.symbol img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+}
+
+.price {
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #22d3ee, #5b8cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ===== META GRID ===== */
+.meta {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.label {
+    font-size: 11px;
+    opacity: 0.6;
+}
+
+/* ===== MINI CHART ===== */
+.mini-chart {
+    margin-top: 18px;
+    height: 40px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-line {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #1dd1a1, #22d3ee);
+    box-shadow: 0 0 12px #22d3ee;
+    animation: chartMove 2s linear infinite;
+}
+
+@keyframes chartMove {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+}
+
+/* ===== ERROR ===== */
+.status-error {
+    color: #ff4d6d;
+    text-align: center;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        padding: 30px;
+        gap: 20px;
+    }
+}
+
 
 .token-info {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 14px;
 }
 
-/* =====================================================
-   RANK
-===================================================== */
+.token-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
 
-.rank-badge {
-    font-size: 11px;
+.token-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.price {
+    font-size: 18px;
     font-weight: 700;
-    color: #60a5fa;
-    margin-right: 4px;
+    color: #36d7ff;
 }
 
-/* =====================================================
-   LOGO FRAME
-===================================================== */
+/* =========================
+   PAIR LOGO FIXED OVERLAP
+========================= */
 
 .pair-logos {
     position: relative;
-    width: 36px;
-    height: 28px;
+    width: 56px;
+    height: 36px;
 }
 
-/* ICON DEPAN */
-.token-logo.primary {
-    position: absolute;
-    left: 0;
-    width: 26px;
-    height: 26px;
+.token-logo {
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    border: 2px solid #0b1220;
-    background: #1e293b;
+    object-fit: cover;
+    border: 2px solid #0b0f1a;
+    background: #111827;
+    position: absolute;
+    transition: 0.2s ease;
+}
+
+/* Logo kiri */
+.token-logo.primary {
+    left: 0;
     z-index: 2;
 }
 
-/* ICON BELAKANG (masuk sedikit ke kiri) */
+/* Logo kanan (SDA) */
 .token-logo.secondary {
-    position: absolute;
-    left: 14px;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    border: 2px solid #0b1220;
-    background: #1e293b;
+    left: 22px;   /* 🔥 ini bikin tidak tenggelam */
     z-index: 1;
 }
 
-/* =====================================================
-   TOKEN NAME
-===================================================== */
+/* =========================
+   SORT SELECT AWESOME STYLE
+========================= */
 
-.token-name {
-    font-size: 13px;
-    font-weight: 600;
-    color: #ffffff;
+.sort-wrapper {
+    position: relative;
+    display: inline-block;
 }
 
-/* =====================================================
-   PRICE (KANAN ATAS)
-===================================================== */
-
-.price {
-    font-size: 16px;
-    font-weight: 700;
-    color: #93c5fd;
-    text-align: right;
+.sort-select {
+    appearance: none;
+    background: #1e293b;
+    color: #f1f5f9;
+    border: 1px solid #334155;
+    padding: 8px 40px 8px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-/* =====================================================
-   META SECTION
-===================================================== */
-
-.meta {
-    margin-top: 12px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px 12px;
-    font-size: 11px;
+.sort-select:hover {
+    border-color: #22d3ee;
+    box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
 }
 
-.meta > div {
-    display: flex;
-    flex-direction: column;
+.sort-select:focus {
+    outline: none;
+    border-color: #22d3ee;
 }
 
-/* TVL full row */
-
-.meta > div:last-child {
-    grid-column: span 2;
-}
-
-/* label */
-
-.label {
-    font-size: 9px;
+.sort-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
     color: #94a3b8;
 }
 
-/* value */
-
-.meta div div:last-child {
-    color: #e2e8f0;
-    font-weight: 600;
+.rank-badge {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 20px;
 }
 
-/* =====================================================
-   MOBILE
-===================================================== */
+.pool-card {
+    position: relative;
+}
 
-@media (max-width: 768px) {
+/* ==============================
+   SEARCH WRAPPER (FLOAT FIX)
+============================== */
+.hero-search-wrapper {
+    position: relative;
+}
 
-    .dashboard-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        padding: 14px;
-    }
+/* ==============================
+   SEARCH ICONS
+============================== */
+.search-icon {
+    font-size: 13px;
+    margin-right: 8px;
+    opacity: 0.6;
+}
 
-    .pool-card {
-        padding: 12px;
-    }
+.clear-search {
+    font-size: 14px;
+    margin-left: 8px;
+    cursor: pointer;
+    opacity: 0;
+    transition: 0.2s ease;
+}
 
-    .token-name {
-        font-size: 12px;
-    }
+.hero-search:hover .clear-search {
+    opacity: 0.6;
+}
 
-    .price {
-        font-size: 14px;
-    }
+.clear-search:hover {
+    opacity: 1;
+    color: #22d3ee;
+}
 
-    .meta {
-        font-size: 10px;
-    }
+/* ==============================
+   SUGGESTION DROPDOWN
+============================== */
+.search-suggestions {
+    position: absolute;
+    top: 115%;
+    left: 0;
+    width: 100%;
+    list-style: none;
+    padding: 8px;
+    margin: 8px 0 0;
+    border-radius: 16px;
+
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+
+    max-height: 260px;
+    overflow-y: auto;
+
+    display: none;
+    z-index: 999;
+}
+
+.search-suggestions li {
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.search-suggestions li:hover {
+    background: linear-gradient(90deg, rgba(34,211,238,0.2), rgba(91,140,255,0.2));
+    color: #22d3ee;
+}
+
+/* Scrollbar modern */
+.search-suggestions::-webkit-scrollbar {
+    width: 6px;
+}
+.search-suggestions::-webkit-scrollbar-thumb {
+    background: #22d3ee;
+    border-radius: 10px;
 }
