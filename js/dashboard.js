@@ -10,6 +10,7 @@ const poolCards = new Map();
 let poolsList = [];
 let autoRefresh = true;
 let refreshInterval = null;
+window.selectedBaseCurrency = "WSDA";
 
 /* =====================================================
    UTILITY: FORMAT LIQUIDITY (lama)
@@ -87,23 +88,114 @@ function populateFilter() {
 
 
 /* =====================================================
+   INIT BASE DROPDOWN - FINAL STABLE
+===================================================== */
+
+function initBaseDropdown() {
+
+    const dropdown = document.getElementById("base-dropdown");
+    const options  = document.getElementById("base-options");
+    const label    = document.getElementById("base-label");
+    const icon     = document.getElementById("base-icon");
+
+    if (!dropdown || !options) return;
+
+    options.innerHTML = "";
+
+    const tokenMap = new Map();
+
+    poolsList.forEach(pool => {
+
+        const [t0, t1] = pool.symbol.toUpperCase().split("/");
+
+        if (!tokenMap.has(t0)) tokenMap.set(t0, pool.icon0);
+        if (!tokenMap.has(t1)) tokenMap.set(t1, pool.icon1);
+    });
+
+    tokenMap.forEach((tokenIcon, tokenSymbol) => {
+
+        const item = document.createElement("div");
+        item.className = "dropdown-item";
+
+        item.innerHTML = `
+            <img src="icons/${tokenIcon}" width="16"/>
+            <span>${tokenSymbol === "WSDA" ? "SDA" : tokenSymbol}</span>
+        `;
+
+        item.addEventListener("click", (e) => {
+
+            e.stopPropagation(); // 🔥 penting biar tidak reopen
+
+            window.selectedBaseCurrency = tokenSymbol;
+
+            label.textContent =
+                tokenSymbol === "WSDA" ? "SDA" : tokenSymbol;
+
+            icon.src = `icons/${tokenIcon}`;
+
+            // CLOSE dropdown
+            options.style.display = "none";
+
+            if (typeof updateDashboard === "function") {
+                updateDashboard();
+            }
+        });
+
+        options.appendChild(item);
+    });
+
+    // default WSDA
+    if (tokenMap.has("WSDA")) {
+        label.textContent = "SDA";
+        icon.src = `icons/${tokenMap.get("WSDA")}`;
+        window.selectedBaseCurrency = "WSDA";
+    }
+
+    /* ==========================
+       TOGGLE OPEN (ONLY HEADER)
+    ========================== */
+
+    const selectedBox = dropdown.querySelector(".dropdown-selected");
+
+    selectedBox.addEventListener("click", (e) => {
+
+        e.stopPropagation();
+
+        const isOpen = options.style.display === "flex";
+
+        options.style.display = isOpen ? "none" : "flex";
+    });
+
+    /* ==========================
+       CLICK OUTSIDE CLOSE
+    ========================== */
+
+    document.addEventListener("click", (e) => {
+
+        if (!dropdown.contains(e.target)) {
+            options.style.display = "none";
+        }
+    });
+}
+/* =====================================================
    MAIN UPDATE DASHBOARD (ALL FILTER CENTRALIZED)
 ===================================================== */
 async function updateDashboard() {
 
-    const baseValue = document.getElementById("base-currency")?.value || "ALL";
+    const baseValue = window.selectedBaseCurrency || "WSDA";
     const poolValue = document.getElementById("pool-filter")?.value || "all";
     const sortValue = document.getElementById("pool-sort")?.value || "price-desc";
 
-    const realBase = BASE_ALIAS[baseValue] || baseValue;
+    const realBase = baseValue === "SDA" ? "WSDA" : baseValue;
 
     let filteredPools = [...poolsList];
 
     // FILTER BASE
     if (baseValue !== "ALL") {
-        filteredPools = filteredPools.filter(pool =>
-            pool.symbol.toUpperCase().includes(realBase)
-        );
+        filteredPools = filteredPools.filter(pool => {
+            const [t0, t1] = pool.symbol.toUpperCase().split("/");
+            return t0 === realBase || t1 === realBase;
+        });
     }
 
     // FILTER POOL
@@ -121,24 +213,23 @@ async function updateDashboard() {
         )
     );
 
-    // SORT REAL NUMERIC (NO FORMAT HERE)
+    // SORT
     results.sort((a, b) => {
+        const pa = Number(a.data?.price ?? 0);
+        const pb = Number(b.data?.price ?? 0);
+        const la = Number(a.data?.liquidity ?? 0);
+        const lb = Number(b.data?.liquidity ?? 0);
 
-    const pa = Number(a.data?.price ?? 0);
-    const pb = Number(b.data?.price ?? 0);
+        if (sortValue === "price-desc") return pb - pa;
+        if (sortValue === "price-asc") return pa - pb;
+        if (sortValue === "liquidity-desc") return lb - la;
+        if (sortValue === "liquidity-asc") return la - lb;
 
-    const la = Number(a.data?.liquidity ?? 0);
-    const lb = Number(b.data?.liquidity ?? 0);
-
-    if (sortValue === "price-desc") return pb - pa;
-    if (sortValue === "price-asc") return pa - pb;
-    if (sortValue === "liquidity-desc") return lb - la;
-    if (sortValue === "liquidity-asc") return la - lb;
-
-    return 0;
-});
+        return 0;
+    });
 
     const container = document.getElementById("dashboard");
+    if (!container) return;
 
     results.forEach(({ pool, data }, index) => {
 
@@ -150,28 +241,29 @@ async function updateDashboard() {
         }
 
         const card = poolCards.get(pool.address);
+
         const rank = card.querySelector(".rank-badge");
-if (rank) {
-    rank.textContent = "#" + (index + 1);
-}
+        if (rank) rank.textContent = "#" + (index + 1);
 
         if (!data.error) {
 
-            card.querySelector(".price").textContent =
-                Number(data.price).toFixed(8) + " SDA";
+            const priceEl = card.querySelector(".price");
+            const liqEl = card.querySelector(".liquidity");
 
-            card.querySelector(".liquidity").textContent =
-    SIDRAPULSE.formatLiquidity(data.liquidity);
+            if (priceEl)
+                priceEl.textContent =
+                    Number(data.price || 0).toFixed(8) +
+                    " " + (realBase === "WSDA" ? "SDA" : realBase);
 
+            if (liqEl)
+                liqEl.textContent =
+                    SIDRAPULSE.formatLiquidity(data.liquidity);
 
-            container.appendChild(card); // reorder without recreate
-
-        } else {
-            card.innerHTML = `<div class="status-error">Error loading pool</div>`;
+            container.appendChild(card);
         }
     });
 
-    // hide unmatched
+    // Hide non matched
     poolCards.forEach((card, address) => {
         if (!filteredPools.find(p => p.address === address)) {
             card.style.display = "none";
@@ -180,7 +272,6 @@ if (rank) {
         }
     });
 }
-
 /* =====================================================
    CREATE POOL CARD (SIMPLIFIED - SINGLE TOKEN UI)
 ===================================================== */
@@ -262,7 +353,7 @@ function startAutoRefresh() {
         if (autoRefresh) {
             const select = document.getElementById("pool-filter");
             const sort = document.getElementById("pool-sort");
-            updateDashboard(select.value, sort.value);
+            updateDashboard();
         }
     }, 15000);
 }
@@ -276,53 +367,61 @@ function resumeAutoRefresh() {
 }
 
 /* =====================================================
-   EVENT LISTENERS
+   EVENT LISTENERS - FINAL STABLE VERSION
 ===================================================== */
+
 window.addEventListener("load", async () => {
 
+    // 1️⃣ Load pools FIRST
     await loadPools();
 
-    const select = document.getElementById("pool-filter");
-    const sort = document.getElementById("pool-sort");
+    // 2️⃣ Init base dropdown AFTER pools loaded
+    initBaseDropdown();
 
+    // 3️⃣ Get elements
+    const poolFilter = document.getElementById("pool-filter");
+    const poolSort   = document.getElementById("pool-sort");
+    const refreshBtn = document.getElementById("refresh-btn");
+    const toggleBtn  = document.getElementById("toggle-refresh");
+
+    // 4️⃣ First render
     await updateDashboard();
 
-    if (select) {
-        select.addEventListener("change", () =>
-            updateDashboard(select.value, sort?.value)
-        );
-    }
+    /* ================= FILTER CHANGE ================= */
 
-    if (sort) {
-        sort.addEventListener("change", () =>
-            updateDashboard(select.value, sort.value)
-        );
-    }
+    poolFilter?.addEventListener("change", () => {
+        updateDashboard();
+    });
 
+    poolSort?.addEventListener("change", () => {
+        updateDashboard();
+    });
+
+    /* ================= MANUAL REFRESH ================= */
+
+    refreshBtn?.addEventListener("click", () => {
+        updateDashboard();
+    });
+
+    /* ================= PAUSE / RESUME ================= */
+
+    toggleBtn?.addEventListener("click", () => {
+
+        autoRefresh = !autoRefresh;
+
+        const icon = toggleBtn.querySelector("i");
+
+        if (!icon) return;
+
+        if (autoRefresh) {
+            icon.classList.remove("fa-play");
+            icon.classList.add("fa-pause");
+        } else {
+            icon.classList.remove("fa-pause");
+            icon.classList.add("fa-play");
+        }
+    });
+
+    // 5️⃣ Start auto refresh (LAST)
     startAutoRefresh();
-});
-
-/* Manual Refresh */
-document.addEventListener("manualRefresh", () => {
-    const select = document.getElementById("pool-filter");
-    const sort = document.getElementById("pool-sort");
-    updateDashboard(select.value, sort.value);
-});
-
-/* Pause / Resume */
-document.addEventListener("pauseAutoRefresh", stopAutoRefresh);
-document.addEventListener("resumeAutoRefresh", resumeAutoRefresh);
-
-/* Search */
-document.addEventListener("searchPair", (e) => {
-    filterPoolsBySymbol(e.detail);
-});
-
-
-
-["base-currency", "pool-filter", "pool-sort"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-        el.addEventListener("change", updateDashboard);
-    }
 });
