@@ -1,23 +1,21 @@
 /**
  * ==========================================
- * SEARCH SUGGEST + ICON HANDLER (FIXED)
- * SidraPulse
+ * DUAL SEARCH SYSTEM
+ * 1. Pair Search  Filter dropdown
+ * 2. Token Search  Scroll to ranking
  * ==========================================
  */
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    const searchInput   = document.getElementById("pair-search");
-    const suggestionsEl = document.getElementById("search-suggestions");
-    const refreshBtn    = document.getElementById("refresh-btn");
-    const toggleBtn     = document.getElementById("toggle-refresh");
-    const poolFilter    = document.getElementById("pool-filter");
+    const pairSearch       = document.getElementById("pair-search");
+    const pairSuggest      = document.getElementById("pair-suggestions");
+    const tokenSearch      = document.getElementById("token-search");
+    const tokenSuggest     = document.getElementById("token-suggestions");
+    const poolFilter       = document.getElementById("pool-filter");
 
     let poolsData = [];
 
-    /* ======================================
-       LOAD POOLS JSON
-    ====================================== */
     try {
         const res = await fetch("data/pools.json");
         poolsData = await res.json();
@@ -26,21 +24,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     /* ======================================
-       SEARCH AUTOCOMPLETE
+       1 PAIR SEARCH (INSIDE FILTER)
     ====================================== */
-    searchInput.addEventListener("input", function () {
+    pairSearch?.addEventListener("input", function () {
 
         const keyword = this.value.toLowerCase();
-        suggestionsEl.innerHTML = "";
+        pairSuggest.innerHTML = "";
 
         if (!keyword) {
-            suggestionsEl.style.display = "none";
+            pairSuggest.style.display = "none";
             return;
         }
 
         const filtered = poolsData.filter(pool =>
-            pool.symbol.toLowerCase().includes(keyword) ||
-            pool.name?.toLowerCase().includes(keyword)
+            pool.symbol.toLowerCase().includes(keyword)
         );
 
         filtered.slice(0, 6).forEach(pool => {
@@ -50,73 +47,67 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             li.addEventListener("click", () => {
 
-                // Isi input
-                searchInput.value = pool.symbol;
-                suggestionsEl.style.display = "none";
+                pairSearch.value = pool.symbol;
+                pairSuggest.style.display = "none";
 
-                // 🔥 SET DROPDOWN FILTER KE POOL YANG DIPILIH
                 if (poolFilter) {
                     poolFilter.value = pool.address;
                 }
 
-                // 🔥 LANGSUNG UPDATE DASHBOARD
                 if (typeof updateDashboard === "function") {
                     updateDashboard();
                 }
-
             });
 
-            suggestionsEl.appendChild(li);
+            pairSuggest.appendChild(li);
         });
 
-        suggestionsEl.style.display = filtered.length ? "block" : "none";
+        pairSuggest.style.display = filtered.length ? "block" : "none";
     });
 
     /* ======================================
-       HIDE SUGGESTION IF CLICK OUTSIDE
+       2 TOKEN SEARCH (SCROLL TO RANKING)
     ====================================== */
-    document.addEventListener("click", (e) => {
-        if (!searchInput.contains(e.target)) {
-            suggestionsEl.style.display = "none";
-        }
-    });
+    tokenSearch?.addEventListener("input", function () {
 
-    /* ======================================
-       REFRESH BUTTON
-    ====================================== */
-    refreshBtn?.addEventListener("click", () => {
+        const keyword = this.value.toLowerCase();
+        tokenSuggest.innerHTML = "";
 
-        const icon = refreshBtn.querySelector("i");
-        icon.classList.add("spin");
-
-        if (typeof updateDashboard === "function") {
-            updateDashboard();
+        if (!keyword) {
+            tokenSuggest.style.display = "none";
+            return;
         }
 
-        setTimeout(() => {
-            icon.classList.remove("spin");
-        }, 1000);
-    });
+        // ambil token unik
+        const tokens = new Set();
 
-    /* ======================================
-       TOGGLE AUTO REFRESH
-    ====================================== */
-    toggleBtn?.addEventListener("click", () => {
+        poolsData.forEach(pool => {
+            const [t0, t1] = pool.symbol.split("/");
+            tokens.add(t0);
+            tokens.add(t1);
+        });
 
-        const icon = toggleBtn.querySelector("i");
+        const filteredTokens = [...tokens].filter(t =>
+            t.toLowerCase().includes(keyword)
+        );
 
-        if (icon.classList.contains("fa-pause")) {
-            SIDRAPULSE.stopAutoRefresh();
-            icon.classList.remove("fa-pause");
-            icon.classList.add("fa-play");
-            toggleBtn.title = "Resume Auto Refresh";
-        } else {
-            SIDRAPULSE.restartAutoRefresh();
-            icon.classList.remove("fa-play");
-            icon.classList.add("fa-pause");
-            toggleBtn.title = "Pause Auto Refresh";
-        }
+        filteredTokens.slice(0, 6).forEach(token => {
 
+            const li = document.createElement("li");
+            li.textContent = token;
+
+            li.addEventListener("click", () => {
+
+                tokenSearch.value = token;
+                tokenSuggest.style.display = "none";
+
+                scrollToToken(token);
+            });
+
+            tokenSuggest.appendChild(li);
+        });
+
+        tokenSuggest.style.display = filteredTokens.length ? "block" : "none";
     });
 
 });
