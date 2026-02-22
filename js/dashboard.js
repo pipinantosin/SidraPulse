@@ -68,7 +68,36 @@ const BASE_ALIAS = {
     WSDA: "WSDA"
 };
 
+/* =====================================================
+   SET BASE CURRENCY (GLOBAL SYNC SAFE)
+===================================================== */
+function setBaseCurrency(tokenSymbol) {
 
+    const dropdown = document.getElementById("base-dropdown");
+    const label    = document.getElementById("base-label");
+    const icon     = document.getElementById("base-icon");
+
+    if (!dropdown || !label || !icon) return;
+
+    const realSymbol = tokenSymbol === "SDA" ? "WSDA" : tokenSymbol;
+
+    window.selectedBaseCurrency = realSymbol;
+
+    // cari icon dari poolsList
+    let foundIcon = null;
+
+    for (const pool of poolsList) {
+        const [t0, t1] = pool.symbol.toUpperCase().split("/");
+        if (t0 === realSymbol) foundIcon = pool.icon0;
+        if (t1 === realSymbol) foundIcon = pool.icon1;
+    }
+
+    label.textContent = realSymbol === "WSDA" ? "SDA" : realSymbol;
+
+    if (foundIcon) {
+        icon.src = `icons/${foundIcon}`;
+    }
+}
 /* =====================================================
    POPULATE FILTER DROPDOWN
 ===================================================== */
@@ -76,7 +105,7 @@ function populateFilter() {
     const select = document.getElementById("pool-filter");
     if (!select) return;
 
-    select.innerHTML = `<option value="all">Semua Pool</option>`;
+    select.innerHTML = `<option value="all">Semua Pair</option>`;
 
     poolsList.forEach(pool => {
         const opt = document.createElement("option");
@@ -124,22 +153,31 @@ function initBaseDropdown() {
 
         item.addEventListener("click", (e) => {
 
-            e.stopPropagation(); // 🔥 penting biar tidak reopen
+    e.stopPropagation();
 
-            window.selectedBaseCurrency = tokenSymbol;
+    const realSymbol = tokenSymbol === "SDA" ? "WSDA" : tokenSymbol;
 
-            label.textContent =
-                tokenSymbol === "WSDA" ? "SDA" : tokenSymbol;
+    window.selectedBaseCurrency = realSymbol;
 
-            icon.src = `icons/${tokenIcon}`;
+    label.textContent =
+        realSymbol === "WSDA" ? "SDA" : realSymbol;
 
-            // CLOSE dropdown
-            options.style.display = "none";
+    icon.src = `icons/${tokenIcon}`;
 
-            if (typeof updateDashboard === "function") {
-                updateDashboard();
-            }
-        });
+    options.style.display = "none";
+
+    /* ===============================
+       AUTO RESET FILTER IF NOT SDA
+    =============================== */
+
+    const poolFilter = document.getElementById("pool-filter");
+
+    if (realSymbol !== "WSDA" && poolFilter) {
+        poolFilter.value = "all";
+    }
+
+    updateDashboard();
+});
 
         options.appendChild(item);
     });
@@ -190,146 +228,283 @@ async function updateDashboard() {
 
     let filteredPools = [...poolsList];
 
-    // FILTER BASE
-    if (baseValue !== "ALL") {
-        filteredPools = filteredPools.filter(pool => {
-            const [t0, t1] = pool.symbol.toUpperCase().split("/");
-            return t0 === realBase || t1 === realBase;
-        });
-    }
+// ==========================================
+// FILTER BASE (RENDER SEMUA POOL YANG MENGANDUNG BASE)
+// ==========================================
 
-    // FILTER POOL
-    if (poolValue !== "all") {
-        filteredPools = filteredPools.filter(pool =>
-            pool.address === poolValue
-        );
-    }
+if (realBase !== "WSDA") {
 
-    const results = await Promise.all(
-        filteredPools.map(pool =>
-            fetchPoolData(pool.address)
-                .then(data => ({ pool, data }))
-                .catch(() => ({ pool, data: { error: true } }))
-        )
-    );
+    filteredPools = filteredPools.filter(pool => {
 
-    // SORT
-    results.sort((a, b) => {
-        const pa = Number(a.data?.price ?? 0);
-        const pb = Number(b.data?.price ?? 0);
-        const la = Number(a.data?.liquidity ?? 0);
-        const lb = Number(b.data?.liquidity ?? 0);
+        const [t0, t1] = pool.symbol.toUpperCase().split("/");
 
-        if (sortValue === "price-desc") return pb - pa;
-        if (sortValue === "price-asc") return pa - pb;
-        if (sortValue === "liquidity-desc") return lb - la;
-        if (sortValue === "liquidity-asc") return la - lb;
-
-        return 0;
+        // tampilkan semua pool yg mengandung base
+        return t0 === realBase || t1 === realBase;
     });
 
-    const container = document.getElementById("dashboard");
-    if (!container) return;
-
-    results.forEach(({ pool, data }, index) => {
-
-        if (!poolCards.has(pool.address)) {
-            const card = createCard(pool, data, index);
-            container.appendChild(card);
-            poolCards.set(pool.address, card);
-            return;
-        }
-
-        const card = poolCards.get(pool.address);
-
-        const rank = card.querySelector(".rank-badge");
-        if (rank) rank.textContent = "#" + (index + 1);
-
-        if (!data.error) {
-
-            const priceEl = card.querySelector(".price");
-            const liqEl = card.querySelector(".liquidity");
-
-            if (priceEl)
-                priceEl.textContent =
-                    Number(data.price || 0).toFixed(8) +
-                    " " + (realBase === "WSDA" ? "SDA" : realBase);
-
-            if (liqEl)
-                liqEl.textContent =
-                    SIDRAPULSE.formatLiquidity(data.liquidity);
-
-            container.appendChild(card);
-        }
-    });
-
-    // Hide non matched
-    poolCards.forEach((card, address) => {
-        if (!filteredPools.find(p => p.address === address)) {
-            card.style.display = "none";
-        } else {
-            card.style.display = "block";
-        }
-    });
 }
+
+// ==========================================
+// FILTER POOL DROPDOWN
+// ==========================================
+
+if (poolValue !== "all") {
+    filteredPools = filteredPools.filter(pool =>
+        pool.address === poolValue
+    );
+}
+
+// ==========================================
+// FETCH DATA
+// ==========================================
+
+const results = await Promise.all(
+    filteredPools.map(pool =>
+        fetchPoolData(pool.address)
+            .then(data => ({ pool, data }))
+            .catch(() => ({ pool, data: { error: true } }))
+    )
+);
+
+// ==========================================
+// SORT (PAKAI FINAL PRICE YANG SUDAH DIKONVERSI)
+// ==========================================
+
+results.sort((a, b) => {
+
+    const computePrice = (item) => {
+
+        if (!item.data || item.data.error) return 0;
+
+        let price = Number(item.data.price || 0);
+
+        const [raw0, raw1] = item.pool.symbol.split("/");
+        const t0 = raw0.toUpperCase();
+        const t1 = raw1.toUpperCase();
+
+        // jika base ada di token0 → invert
+        if (realBase === t0 && price !== 0) {
+            price = 1 / price;
+        }
+
+        return price;
+    };
+
+    const pa = computePrice(a);
+    const pb = computePrice(b);
+
+    const la = Number(a.data?.liquidity ?? 0);
+    const lb = Number(b.data?.liquidity ?? 0);
+
+    if (sortValue === "price-desc") return pb - pa;
+    if (sortValue === "price-asc") return pa - pb;
+    if (sortValue === "liquidity-desc") return lb - la;
+    if (sortValue === "liquidity-asc") return la - lb;
+
+    return 0;
+});
+
+// ==========================================
+// RENDER (SAFE & BALANCED)
+// ==========================================
+
+const container = document.getElementById("dashboard");
+if (!container) return;
+
+results.forEach(({ pool, data }, index) => {
+
+    // ==============================
+    // CREATE CARD IF NOT EXISTS
+    // ==============================
+    if (!poolCards.has(pool.address)) {
+        const card = createCard(pool, data || {}, index);
+        container.appendChild(card);
+        poolCards.set(pool.address, card);
+    }
+
+    const card = poolCards.get(pool.address);
+    if (!card) return;
+
+    // ==============================
+    // UPDATE RANK
+    // ==============================
+    const rank = card.querySelector(".rank-badge");
+    if (rank) rank.textContent = "#" + (index + 1);
+
+    // ==============================
+    // SAFE DATA CHECK
+    // ==============================
+    if (!data || data.error) {
+        card.style.display = "block";
+        return;
+    }
+
+    // ==============================
+    // PREPARE DATA
+    // ==============================
+    let finalPrice = Number(data.price) || 0;
+    let liquidity  = Number(data.liquidity) || 0;
+
+    let [raw0, raw1] = pool.symbol.split("/");
+    let t0 = raw0.toUpperCase();
+    let t1 = raw1.toUpperCase();
+
+    let icon0 = pool.icon0;
+    let icon1 = pool.icon1;
+
+    let displayLeft  = raw0;
+    let displayRight = raw1;
+
+    // ==============================
+    // SWAP LOGIC
+    // ==============================
+    if (realBase === t0) {
+
+        displayLeft  = raw1;
+        displayRight = raw0;
+
+        [icon0, icon1] = [icon1, icon0];
+
+        if (finalPrice !== 0) {
+            finalPrice = 1 / finalPrice;
+        }
+    }
+
+    // ==============================
+    // UPDATE ELEMENTS
+    // ==============================
+    const nameEl  = card.querySelector(".token-name");
+    const imgEls  = card.querySelectorAll(".token-logo");
+    const priceEl = card.querySelector(".price");
+    const liqEl   = card.querySelector(".liquidity");
+
+    if (nameEl) {
+        nameEl.textContent =
+            displayLeft.replace("WSDA", "SDA") +
+            " / " +
+            displayRight.replace("WSDA", "SDA");
+    }
+
+    if (imgEls.length === 2) {
+        imgEls[0].src = `icons/${icon0}`;
+        imgEls[1].src = `icons/${icon1}`;
+    }
+
+    if (priceEl) {
+        priceEl.textContent =
+            finalPrice.toFixed(8) +
+            " " +
+            (realBase === "WSDA" ? "SDA" : realBase);
+    }
+
+    if (liqEl) {
+        liqEl.textContent = formatLiquidityScaled(liquidity);
+    }
+
+    card.style.display = "block";
+});
+
+
+// ==========================================
+// HIDE NON MATCHED
+// ==========================================
+
+poolCards.forEach((card, address) => {
+    const exists = filteredPools.some(p => p.address === address);
+    if (!exists) {
+        card.style.display = "none";
+    }
+});
+
+} 
 /* =====================================================
    CREATE POOL CARD (SIMPLIFIED - SINGLE TOKEN UI)
 ===================================================== */
 function createCard(poolInfo, liveData, index = 0) {
+
+    const realBase = (window.selectedBaseCurrency || "WSDA").toUpperCase();
+
     const div = document.createElement("div");
     div.className = "pool-card";
 
     if (!liveData || liveData.error) {
         div.innerHTML = `
-    <div class="rank-badge">#${index + 1}</div>
-    <div class="status-error">Error loading pool</div>
-`;
+            <div class="rank-badge">#${index + 1}</div>
+            <div class="status-error">Error loading pool</div>
+        `;
         return div;
     }
 
-    const tokenName = poolInfo.symbol.split("/")[0];
-    const price = Number(liveData.price || 0).toFixed(8);
+    let [raw0, raw1] = poolInfo.symbol.split("/");
+
+    let t0 = raw0.toUpperCase();
+    let t1 = raw1.toUpperCase();
+
+    let icon0 = poolInfo.icon0;
+    let icon1 = poolInfo.icon1;
+
+    let displayLeft = raw0;
+    let displayRight = raw1;
+
+    let finalPrice = Number(liveData.price || 0);
+
+    // =====================================
+    // SWAP LOGIC (CASE SAFE)
+    // =====================================
+
+    if (realBase === t0) {
+
+        // swap visual
+        displayLeft = raw1;
+        displayRight = raw0;
+
+        [icon0, icon1] = [icon1, icon0];
+
+        // invert price
+        if (finalPrice !== 0) {
+            finalPrice = 1 / finalPrice;
+        }
+
+    }
+    else if (realBase === t1) {
+        // sudah benar, tidak perlu swap
+        displayLeft = raw0;
+        displayRight = raw1;
+    }
+
+    const price = finalPrice.toFixed(8);
     const liquidity = formatLiquidityScaled(liveData.liquidity);
-    const volume24h = liveData.volume24h || "$0";
-    const tvl = liveData.tvl || "$0";
 
     div.innerHTML = `
-    <div class="rank-badge">#${index + 1}</div>
+        <div class="rank-badge">#${index + 1}</div>
 
-    <div class="pool-header">
-        <div class="token-info">
-            <div class="pair-logos">
-    <img src="icons/${poolInfo.icon0}" class="token-logo primary"/>
-    <img src="icons/${poolInfo.icon1}" class="token-logo secondary"/>
-</div>
-            <div>
-                <div class="token-name">${tokenName}</div>
-                <div class="price">${price} SDA</div>
+        <div class="pool-header">
+            <div class="token-info">
+                <div class="pair-logos">
+                    <img src="icons/${icon0}" class="token-logo primary"/>
+                    <img src="icons/${icon1}" class="token-logo secondary"/>
+                </div>
+                <div>
+                    <div class="token-name">
+                        ${displayLeft.replace("WSDA","SDA")} / ${displayRight.replace("WSDA","SDA")}
+                    </div>
+                    <div class="price">
+                        ${price} ${realBase === "WSDA" ? "SDA" : realBase}
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="meta">
-        <div>
-            <div class="label">Liquidity</div>
-            <div class="liquidity">${liquidity}</div>
+        <div class="meta">
+            <div>
+                <div class="label">Liquidity</div>
+                <div class="liquidity">${liquidity}</div>
+            </div>
         </div>
-        <div>
-            <div class="label">24H Volume</div>
-            <div>${volume24h}</div>
-        </div>
-        <div>
-            <div class="label">TVL</div>
-            <div>${tvl}</div>
-        </div>
-    </div>
-`;
-
-
+    `;
 
     return div;
 }
-
 /* =====================================================
    SEARCH FILTER BY SYMBOL
 ===================================================== */
@@ -389,39 +564,24 @@ window.addEventListener("load", async () => {
 
     /* ================= FILTER CHANGE ================= */
 
-    poolFilter?.addEventListener("change", () => {
+    poolFilter?.addEventListener("change", (e) => {
+
+    const selectedAddress = e.target.value;
+
+    if (selectedAddress === "all") {
         updateDashboard();
-    });
+        return;
+    }
 
-    poolSort?.addEventListener("change", () => {
+    const selectedPool = poolsList.find(p => p.address === selectedAddress);
+
+    if (!selectedPool) {
         updateDashboard();
-    });
+        return;
+    }
 
-    /* ================= MANUAL REFRESH ================= */
+    const [t0, t1] = selectedPool.symbol.toUpperCase().split("/");
 
-    refreshBtn?.addEventListener("click", () => {
-        updateDashboard();
-    });
-
-    /* ================= PAUSE / RESUME ================= */
-
-    toggleBtn?.addEventListener("click", () => {
-
-        autoRefresh = !autoRefresh;
-
-        const icon = toggleBtn.querySelector("i");
-
-        if (!icon) return;
-
-        if (autoRefresh) {
-            icon.classList.remove("fa-play");
-            icon.classList.add("fa-pause");
-        } else {
-            icon.classList.remove("fa-pause");
-            icon.classList.add("fa-play");
-        }
-    });
-
-    // 5️⃣ Start auto refresh (LAST)
-    startAutoRefresh();
-});
+    // PRIORITAS:
+    // Jika salah satu token adalah WSDA  jadikan base
+    
