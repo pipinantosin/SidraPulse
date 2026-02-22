@@ -37,61 +37,85 @@
 
 <!-- ===== Hero Section ===== -->
 <header class="hero">
+
     <div class="hero-left">
         <h1>SidraPulse</h1>
         <p>Real-Time Token & Liquidity Monitor</p>
     </div>
+
     <div class="hero-right">
+
+        <!-- ================= ACTION BUTTONS ================= -->
         <div class="hero-actions">
             <button id="refresh-btn" title="Refresh">
-    <i class="fas fa-sync-alt"></i>
-</button>
+                <i class="fas fa-sync-alt"></i>
+            </button>
 
-<button id="toggle-refresh" title="Pause Auto Refresh">
-    <i class="fas fa-pause"></i>
-</button>
-
+            <button id="toggle-refresh" title="Pause Auto Refresh">
+                <i class="fas fa-pause"></i>
+            </button>
         </div>
+
+
+        <!-- ================= TOKEN SEARCH (SCROLL TO RANKING) ================= -->
         <div class="hero-search">
             <i class="fas fa-search"></i>
-            <input type="text" id="pair-search" placeholder="Search token or pair...">
-            <ul id="search-suggestions" class="suggestions"></ul>
+            <input type="text" id="token-search" placeholder="Search token ranking...">
+            <ul id="token-suggestions" class="suggestions"></ul>
         </div>
+
+
+        <!-- ================= FILTER SECTION ================= -->
         <div class="hero-filters">
 
-    <div class="select-wrapper">
-        <label>Base Currency</label>
-        <div id="base-dropdown" class="custom-dropdown">
-    <div class="dropdown-selected">
-        <img id="base-icon" src="" />
-        <span id="base-label">SDA</span>
-    </div>
-    <div id="base-options" class="dropdown-options"></div>
-</div>
+            <!-- ===== BASE CURRENCY ===== -->
+            <div class="select-wrapper">
+                <label>Base Currency</label>
+                <div id="base-dropdown" class="custom-dropdown">
+                    <div class="dropdown-selected">
+                        <img id="base-icon" src="" />
+                        <span id="base-label">SDA</span>
+                    </div>
+                    <div id="base-options" class="dropdown-options"></div>
+                </div>
+            </div>
 
-    </div>
 
-    <div class="select-wrapper">
-        <label>Pair Filter</label>
-        <select id="pool-filter">
-            <option value="all">All Pair</option>
-        </select>
-    </div>
+            <!-- ===== PAIR FILTER + SEARCH ===== -->
+            <div class="select-wrapper">
+                <label>Pair Filter</label>
 
-</div>
+                <div class="pair-filter-wrapper">
+                <i class="fas fa-search"></i>
+                    <input type="text"
+                           id="pair-search"
+                           placeholder="Search pair" />
 
-            <div class="sort-wrapper">
-    <select id="pool-sort" class="sort-select">
-        <option value="price-desc">💰 Harga Tertinggi</option>
-        <option value="price-asc">💰 Harga Terendah</option>
-        <option value="liquidity-desc">💧 Likuiditas Tertinggi</option>
-        <option value="liquidity-asc">💧 Likuiditas Terendah</option>
-    </select>
-    <i class="fas fa-sort sort-icon"></i>
-</div>
+                    <ul id="pair-suggestions" class="suggestions"></ul>
+
+                    <select id="pool-filter">
+                        <option value="all">All Pair</option>
+                    </select>
+
+                </div>
+            </div>
 
         </div>
+
+
+        <!-- ================= SORT ================= -->
+        <div class="sort-wrapper">
+            <select id="pool-sort" class="sort-select">
+                <option value="price-desc"> Harga Tertinggi</option>
+                <option value="price-asc"> Harga Terendah</option>
+                <option value="liquidity-desc"> Likuiditas Tertinggi</option>
+                <option value="liquidity-asc"> Likuiditas Terendah</option>
+            </select>
+            <i class="fas fa-sort sort-icon"></i>
+        </div>
+
     </div>
+
 </header>
 
 <!-- ===== Dashboard ===== -->
