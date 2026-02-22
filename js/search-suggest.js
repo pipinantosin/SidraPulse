@@ -37,27 +37,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const filtered = poolsData.filter(pool =>
-            pool.symbol.toLowerCase().includes(keyword)
+            pool.symbol
+    .replace("WSDA", "SDA")
+    .toLowerCase()
+    .includes(keyword)
         );
 
         filtered.slice(0, 6).forEach(pool => {
 
             const li = document.createElement("li");
-            li.textContent = pool.symbol;
+            li.textContent = pool.symbol.replace("WSDA", "SDA");
 
             li.addEventListener("click", () => {
 
-                pairSearch.value = pool.symbol;
-                pairSuggest.style.display = "none";
+    pairSearch.value = "";
+    pairSuggest.style.display = "none";
 
-                if (poolFilter) {
-                    poolFilter.value = pool.address;
-                }
+    poolFilter.value = pool.address;
 
-                if (typeof updateDashboard === "function") {
-                    updateDashboard();
-                }
-            });
+    updateDashboard();
+});
 
             pairSuggest.appendChild(li);
         });
@@ -83,8 +82,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         poolsData.forEach(pool => {
             const [t0, t1] = pool.symbol.split("/");
-            tokens.add(t0);
-            tokens.add(t1);
+            if (t0 !== "WSDA") tokens.add(t0);
+            if (t1 !== "WSDA") tokens.add(t1);
         });
 
         const filteredTokens = [...tokens].filter(t =>
@@ -98,11 +97,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             li.addEventListener("click", () => {
 
-                tokenSearch.value = token;
-                tokenSuggest.style.display = "none";
+    tokenSearch.value = "";
+    tokenSuggest.style.display = "none";
 
-                scrollToToken(token);
-            });
+    scrollToToken(token);
+});
 
             tokenSuggest.appendChild(li);
         });
