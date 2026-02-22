@@ -268,3 +268,12 @@ body {
         width: 120px;
     }
 }
+
+
+.custom-dropdown .dropdown-options {
+    display: none;
+}
+
+.custom-dropdown.open .dropdown-options {
+    display: block;
+}
