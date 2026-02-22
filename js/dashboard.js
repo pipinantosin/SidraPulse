@@ -584,4 +584,45 @@ window.addEventListener("load", async () => {
 
     // PRIORITAS:
     // Jika salah satu token adalah WSDA  jadikan base
-    
+    if (t0 === "WSDA" || t1 === "WSDA") {
+        setBaseCurrency("WSDA");
+    } else {
+        // fallback: pakai token kedua sebagai base
+        setBaseCurrency(t1);
+    }
+
+    updateDashboard();
+});
+
+    poolSort?.addEventListener("change", () => {
+        updateDashboard();
+    });
+
+    /* ================= MANUAL REFRESH ================= */
+
+    refreshBtn?.addEventListener("click", () => {
+        updateDashboard();
+    });
+
+    /* ================= PAUSE / RESUME ================= */
+
+    toggleBtn?.addEventListener("click", () => {
+
+        autoRefresh = !autoRefresh;
+
+        const icon = toggleBtn.querySelector("i");
+
+        if (!icon) return;
+
+        if (autoRefresh) {
+            icon.classList.remove("fa-play");
+            icon.classList.add("fa-pause");
+        } else {
+            icon.classList.remove("fa-pause");
+            icon.classList.add("fa-play");
+        }
+    });
+
+    // 5️⃣ Start auto refresh (LAST)
+    startAutoRefresh();
+});
