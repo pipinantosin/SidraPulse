@@ -227,19 +227,25 @@ async function updateDashboard() {
     const realBase = baseValue === "SDA" ? "WSDA" : baseValue;
 
     let filteredPools = [...poolsList];
+    
+    
 
 // ==========================================
 // FILTER BASE (RENDER SEMUA POOL YANG MENGANDUNG BASE)
 // ==========================================
 
-if (realBase !== "WSDA") {
+if (realBase) {
 
-    filteredPools = filteredPools.filter(pool => {
+    filteredPools = filteredPools.filter((pool) => {
 
         const [t0, t1] = pool.symbol.toUpperCase().split("/");
 
         // tampilkan semua pool yg mengandung base
-        return t0 === realBase || t1 === realBase;
+        return (
+            t0 === realBase ||
+            t1 === realBase
+        );
+
     });
 
 }
@@ -417,6 +423,33 @@ poolCards.forEach((card, address) => {
 });
 
 } 
+
+function scrollToToken(tokenSymbol) {
+
+    const cards = document.querySelectorAll(".pool-card");
+
+    for (const card of cards) {
+
+        const nameEl = card.querySelector(".token-name");
+        if (!nameEl) continue;
+
+        if (nameEl.textContent.toUpperCase().includes(tokenSymbol.toUpperCase())) {
+
+            card.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+            card.classList.add("highlight");
+
+            setTimeout(() => {
+                card.classList.remove("highlight");
+            }, 1500);
+
+            break;
+        }
+    }
+}
 /* =====================================================
    CREATE POOL CARD (SIMPLIFIED - SINGLE TOKEN UI)
 ===================================================== */
@@ -557,6 +590,26 @@ window.addEventListener("load", async () => {
     const poolFilter = document.getElementById("pool-filter");
     const poolSort   = document.getElementById("pool-sort");
     const refreshBtn = document.getElementById("refresh-btn");
+
+refreshBtn?.addEventListener("click", async () => {
+
+    const icon = refreshBtn.querySelector("i");
+
+    // mulai muter
+    icon.classList.add("spin");
+
+    try {
+        if (typeof updateDashboard === "function") {
+            await updateDashboard(); // pastikan ini async
+        }
+    } catch (err) {
+        console.error("Refresh error:", err);
+    }
+
+    // berhenti muter
+    icon.classList.remove("spin");
+
+});
     const toggleBtn  = document.getElementById("toggle-refresh");
 
     // 4️⃣ First render
