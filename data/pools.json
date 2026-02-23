@@ -272,14 +272,6 @@
     "icon1": "smaf.png"
   },
   {
-    "name": "FBAY-SDS",
-    "symbol": "FBAY/SDS",
-    "address": "0xAa65afc7DDEe906f7800dae3f19BEE0E2cCC6656",
-    "description": "FBAY paired with SDS",
-    "icon0": "fbay.png",
-    "icon1": "sds.png"
-  },
-  {
     "name": "FREEt-SKMH",
     "symbol": "FREEt/SKMH",
     "address": "0xe50aA393d5995f40F91Ccf0f4D7258B41F275CAF",
@@ -304,12 +296,12 @@
     "icon1": "zsm.png"
   },
   {
-    "name": "SDS-FBAY",
-    "symbol": "SDS/FBAY",
+    "name": "FBAY-SDS",
+    "symbol": "FBAY/SDS",
     "address": "0xAa65afc7DDEe906f7800dae3f19BEE0E2cCC6656",
-    "description": "SDS paired with FBAY",
-    "icon0": "sds.png",
-    "icon1": "fbay.png"
+    "description": "FBAY paired with SDS",
+    "icon0": "fbay.png",
+    "icon1": "sds.png"
   },
   {
     "name": "SKMH-SMAF",
