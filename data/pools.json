@@ -40,12 +40,12 @@
     "icon1": "wsda.png"
   },
   {
-    "name": "SIT-WSDA",
-    "symbol": "SIT/WSDA",
+    "name": "WSDA-SIT",
+    "symbol": "WSDA/SIT",
     "address": "0xC21a15e83d171E95621Fa979bE35B1c5ad954dbA",
-    "description": "SIDRA ToGo token paired with Wrapped SDA",
-    "icon0": "sit.png",
-    "icon1": "wsda.png"
+    "description": "Wrapped SDA paired with SIDRA ToGo token",
+    "icon0": "wsda.png",
+    "icon1": "sit.png"
   },
   {
     "name": "SGWA-WSDA",
@@ -72,12 +72,12 @@
     "icon1": "wsda.png"
   },
   {
-    "name": "DBI-WSDA",
-    "symbol": "DBI/WSDA",
+    "name": "WSDA-DBI",
+    "symbol": "WSDA/DBI",
     "address": "0xD7eA98A1F45f042DBa3FA10a89092bddF943719a",
-    "description": "Digital Banking Initiative token paired with Wrapped SDA",
-    "icon0": "dbi.png",
-    "icon1": "wsda.png"
+    "description": "Wrapped SDA paired with Digital Banking Initiative token",
+    "icon0": "wsda.png",
+    "icon1": "dbi.png"
   },
   {
     "name": "SDS-WSDA",
@@ -112,12 +112,12 @@
     "icon1": "wsda.png"
   },
   {
-    "name": "WPX-WSDA",
-    "symbol": "WPX/WSDA",
+    "name": "WSDA-WPX",
+    "symbol": "WSDA/WPX",
     "address": "0x5298ED19B27045E22058E1D58264c3D05958f457",
-    "description": "widpnix token paired with Wrapped SDA",
-    "icon0": "wpx.png",
-    "icon1": "wsda.png"
+    "description": "Wrapped SDA with widpnix token paired",
+    "icon0": "wsda.png",
+    "icon1": "wpx.png"
   },
   {
     "name": "STSX-WSDA",
@@ -160,12 +160,12 @@
     "icon1": "wsda.png"
   },
   {
-    "name": "SKMH-WSDA",
-    "symbol": "SKMH/WSDA",
+    "name": "WSDA-SKMH",
+    "symbol": "WSDA/SKMH",
     "address": "0x19Ce764Bb7F979B89c1c5D238Adc3cb0c40F2ff9",
-    "description": "Sukoon Mind Horizon token paired with Wrapped SDA",
-    "icon0": "skmh.png",
-    "icon1": "wsda.png"
+    "description": "Wrapped SDA paired with Sukoon Mind Horizon token",
+    "icon0": "wsda.png",
+    "icon1": "skmh.png"
   },
   {
     "name": "CSF-WSDA",
@@ -184,12 +184,12 @@
     "icon1": "wsda.png"
   },
   {
-    "name": "MBF-WSDA",
-    "symbol": "MBF/WSDA",
+    "name": "WSDA-MBF",
+    "symbol": "WSDA/MBF",
     "address": "0x01Fb5666dCF3f0ECB990E2648b2fd8C90516A75e",
-    "description": "EBMOF token paired with Wrapped SDA",
-    "icon0": "mbf.png",
-    "icon1": "wsda.png"
+    "description": "Wrapped SDA paired with EBMOF token",
+    "icon0": "wsda.png",
+    "icon1": "mbf.png"
   },
   {
     "name": "TRL-WSDA",
@@ -208,12 +208,12 @@
     "icon1": "wsda.png"
   },
   {
-    "name": "VLCP-WSDA",
-    "symbol": "VLCP/WSDA",
+    "name": "WSDA-VLCP",
+    "symbol": "WSDA/VLCP",
     "address": "0x41dBEF0e85EC081dF81eF227c6dDDcf8ec983D3B",
-    "description": "VL Community Platform token paired with Wrapped SDA",
-    "icon0": "vlcp.png",
-    "icon1": "wsda.png"
+    "description": "Wrapped SDA paired with VL Community Platform token",
+    "icon0": "wsda.png",
+    "icon1": "vlcp.png"
   },
   {
     "name": "TAP-WSDA",
@@ -224,12 +224,12 @@
     "icon1": "wsda.png"
   },
   {
-    "name": "VPM-WSDA",
-    "symbol": "VPM/WSDA",
+    "name": "WSDA-VPM",
+    "symbol": "WSDA/VPM",
     "address": "0x1De3952060eF06005c16fE5cD3272Edc3136f0D8",
-    "description": "VPM ecosystem token paired with Wrapped SDA",
-    "icon0": "vpm.png",
-    "icon1": "wsda.png"
+    "description": "Wrapped SDA paired with VPM ecosystem token",
+    "icon0": "wsda.png",
+    "icon1": "vpm.png"
   },
   {
     "name": "VMB-WSDA",
