@@ -1,7 +1,7 @@
 [
   {
-    "name": "ARMS-WSDA",
-    "symbol": "ARMS/WSDA",
+    "name": "ARMs-WSDA",
+    "symbol": "ARMs/WSDA",
     "address": "0xF779943822CA0c9C8d5486aF78b9A001abc03b44",
     "description": "ARMS token paired with Wrapped SDA",
     "icon0": "arms.png",
@@ -239,7 +239,7 @@
     "icon0": "vmb.png",
     "icon1": "wsda.png"
   },
-   {
+  {
     "name": "AIR-FREEt",
     "symbol": "AIR/FREEt",
     "address": "0xaaa6fcc69d955c6a3c3a9f0d0135c9467178209d",
@@ -247,12 +247,76 @@
     "icon0": "air.png",
     "icon1": "freet.png"
   },
-    {
+  {
     "name": "FREEt-GLNs",
     "symbol": "FREEt/GLNs",
     "address": "0xe6d96a10a749569f4B78F82ba51a8A9591ACbbA5",
     "description": "Freelancium paired with Global Logistics Network",
     "icon0": "freet.png",
     "icon1": "glns.png"
+  },
+  {
+    "name": "ARMs-HEC",
+    "symbol": "ARMs/HEC",
+    "address": "0x2a6f23d355B408188936e1A1472A012B830Bb74f",
+    "description": "ARMS paired with HEC",
+    "icon0": "arms.png",
+    "icon1": "hec.png"
+  },
+  {
+    "name": "EWM-SMAF",
+    "symbol": "EWM/SMAF",
+    "address": "0x54454b11e1f9666C22c951a27be769356Eca29DD",
+    "description": "EWM paired with SMAF",
+    "icon0": "ewm.png",
+    "icon1": "smaf.png"
+  },
+  {
+    "name": "FBAY-SDS",
+    "symbol": "FBAY/SDS",
+    "address": "0xAa65afc7DDEe906f7800dae3f19BEE0E2cCC6656",
+    "description": "FBAY paired with SDS",
+    "icon0": "fbay.png",
+    "icon1": "sds.png"
+  },
+  {
+    "name": "FREEt-SKMH",
+    "symbol": "FREEt/SKMH",
+    "address": "0xe50aA393d5995f40F91Ccf0f4D7258B41F275CAF",
+    "description": "FREET paired with SKMH",
+    "icon0": "freet.png",
+    "icon1": "skmh.png"
+  },
+  {
+    "name": "FREEt-VPA",
+    "symbol": "FREEt/VPA",
+    "address": "0x04Be01B99442fA3Fa93C4EcE50e552478B73B1d8",
+    "description": "FREET paired with VPA",
+    "icon0": "freet.png",
+    "icon1": "vpa.png"
+  },
+  {
+    "name": "HEC-ZSM",
+    "symbol": "HEC/ZSM",
+    "address": "0x034a35134ACCB5876bD329CCE3f472EB751418fE",
+    "description": "HEC paired with ZSM",
+    "icon0": "hec.png",
+    "icon1": "zsm.png"
+  },
+  {
+    "name": "SDS-FBAY",
+    "symbol": "SDS/FBAY",
+    "address": "0xAa65afc7DDEe906f7800dae3f19BEE0E2cCC6656",
+    "description": "SDS paired with FBAY",
+    "icon0": "sds.png",
+    "icon1": "fbay.png"
+  },
+  {
+    "name": "SKMH-SMAF",
+    "symbol": "SKMH/SMAF",
+    "address": "0xb6Ad00d19C50921deDD5C3bA1963A5c4eCa36251",
+    "description": "SKMH paired with SMAF",
+    "icon0": "skmh.png",
+    "icon1": "smaf.png"
   }
 ]
