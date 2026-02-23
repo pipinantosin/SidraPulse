@@ -166,13 +166,9 @@ function initBaseDropdown() {
 
     options.style.display = "none";
 
-    /* ===============================
-       AUTO RESET FILTER IF NOT SDA
-    =============================== */
-
+    // 🔥 ALWAYS RESET FILTER
     const poolFilter = document.getElementById("pool-filter");
-
-    if (realSymbol !== "WSDA" && poolFilter) {
+    if (poolFilter) {
         poolFilter.value = "all";
     }
 
