@@ -208,5 +208,31 @@ walletToggle.addEventListener("click", () => {
     walletPanel.classList.toggle("collapsed");
 });
 </script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js")
+      .then(reg => {
+        console.log("Service Worker Registered");
+
+        // auto update
+        reg.onupdatefound = () => {
+          const newWorker = reg.installing;
+          newWorker.onstatechange = () => {
+            if (newWorker.state === "installed") {
+              if (navigator.serviceWorker.controller) {
+                console.log("New version available, reloading...");
+                window.location.reload();
+              }
+            }
+          };
+        };
+
+      })
+      .catch(err => console.log("SW failed:", err));
+  });
+}
+</script>
 </body>
 </html>
