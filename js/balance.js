@@ -174,3 +174,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    renderWalletList();
+
+    if (savedWallets.length > 0) {
+        document.getElementById("check-address").value =
+            savedWallets[savedWallets.length - 1];
+    }
+
+});
+
+/* ==============================
+   AUTO ADJUST FLOATING SPACING
+============================== */
+
+const panel = document.getElementById("wallet-panel");
+
+function adjustBottomSpacing() {
+    if (!panel) return;
+    const height = panel.offsetHeight;
+    document.body.style.paddingBottom = height + 40 + "px";
+}
+
+window.addEventListener("load", adjustBottomSpacing);
+window.addEventListener("resize", adjustBottomSpacing);
