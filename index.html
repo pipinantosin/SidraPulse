@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/hero-filter.css">
 <link rel="stylesheet" href="css/splash.css">
+<link rel="stylesheet" href="css/wallet-panel.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 </head>
@@ -121,18 +122,64 @@
 <!-- ===== Dashboard ===== -->
 <main>
     <div id="dashboard" class="dashboard-grid"></div>
-</main>
 
+</main>
+<!-- ===== FLOATING WALLET PANEL ===== -->
+<div id="wallet-panel" class="wallet-panel collapsed">
+
+    <div class="wallet-header" id="wallet-toggle">
+        <i class="fas fa-wallet"></i>
+        <span>Wallet Balance</span>
+        <i class="fas fa-chevron-up toggle-icon"></i>
+    </div>
+
+    <div class="wallet-body">
+
+        <!-- Input Wallet -->
+        <input type="text" id="check-address" placeholder="Input wallet address">
+        <button id="check-balance-btn">Check Balance</button>
+
+        <!-- Saved Wallets -->
+        <h3>Saved Wallets</h3>
+        <div id="wallet-list"></div>
+
+        <!-- Balance Result -->
+        <div id="balance-result"></div>
+
+        <hr>
+
+        <!-- Add Custom Token -->
+        <h3>Add Custom Token</h3>
+
+        <input id="new-symbol" placeholder="Symbol (ex: SMAF)">
+        <input id="new-address" placeholder="Contract Address">
+
+        <button id="add-token-btn">Add Token</button>
+
+        <div id="token-list"></div>
+
+    </div>
+</div>
+
+</div>
 <!-- ===== JS Dependencies ===== -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
-
+<script src="js/tokens.js"></script>
 <script src="js/core.js"></script>
 <script src="js/abi.js"></script>
 <script src="js/price.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/search-suggest.js"></script>
 <script src="js/splash.js"></script>
+<script src="js/balance.js"></script>
 
+<script>
+const walletPanel = document.getElementById("wallet-panel");
+const walletToggle = document.getElementById("wallet-toggle");
 
+walletToggle.addEventListener("click", () => {
+    walletPanel.classList.toggle("collapsed");
+});
+</script>
 </body>
 </html>
