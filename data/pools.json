@@ -310,5 +310,13 @@
     "description": "SKMH paired with SMAF",
     "icon0": "skmh.png",
     "icon1": "smaf.png"
+  },
+  {
+    "name": "REGS-WSDA",
+    "symbol": "REGS/WSDA",
+    "address": "0x19b0Ad4056C8EDF5309f75eeC679D2fA6c1D34f0",
+    "description": "REGS paired with WSDA",
+    "icon0": "regs.png",
+    "icon1": "wsda.png"
   }
 ]
