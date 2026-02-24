@@ -7,39 +7,86 @@
     bottom: 20px;
     right: 20px;
     width: 320px;
+
+    /* IMPORTANT FIX */
+    max-height: 80vh; /* anti tenggelam */
+
     background: linear-gradient(145deg, #0f1c3f, #142a66);
     border: 1px solid rgba(59,130,246,0.4);
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+
     overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
     transition: all 0.3s ease;
     z-index: 2000;
 }
 
-/* Collapsed State */
+/* =========================================
+   COLLAPSED STATE
+========================================= */
+
 .wallet-panel.collapsed .wallet-body {
     display: none;
 }
+
+
+/* =========================================
+   HEADER (ANTI TENGGELAM)
+========================================= */
 
 .wallet-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     padding: 12px 15px;
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
     color: #60a5fa;
+
+    background: linear-gradient(145deg, #0f1c3f, #142a66);
+
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 .wallet-header i {
     font-size: 14px;
 }
 
+
+/* =========================================
+   BODY SCROLL FIX
+========================================= */
+
 .wallet-body {
     padding: 15px;
     background: #0b1220;
+
+    overflow-y: auto;
+    flex: 1;
 }
+
+/* Smooth Scroll */
+.wallet-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.wallet-body::-webkit-scrollbar-thumb {
+    background: rgba(59,130,246,0.5);
+    border-radius: 6px;
+}
+
+
+/* =========================================
+   INPUT
+========================================= */
 
 .wallet-body input {
     width: 100%;
@@ -58,6 +105,11 @@
     box-shadow: 0 0 6px rgba(59,130,246,0.4);
 }
 
+
+/* =========================================
+   BUTTON
+========================================= */
+
 .wallet-body button {
     width: 100%;
     padding: 8px;
@@ -74,6 +126,11 @@
     background: #2563eb;
 }
 
+
+/* =========================================
+   BALANCE RESULT
+========================================= */
+
 #balance-result {
     margin-top: 10px;
     padding: 10px;
@@ -81,4 +138,37 @@
     border-radius: 8px;
     font-size: 13px;
     color: #e2e8f0;
+}
+
+
+/* =========================================
+   PREVENT CONTENT COVERED PANEL
+========================================= */
+
+body {
+    padding-bottom: 380px;
+}
+
+
+/* =========================================
+   EXPANDED LIMIT
+========================================= */
+
+.wallet-panel.expanded {
+    max-height: 80vh;
+}
+
+
+/* =========================================
+   MOBILE SAFE
+========================================= */
+
+@media (max-width:600px) {
+    .wallet-panel {
+        right: 10px;
+        bottom: 10px;
+        left: 10px;
+        width: auto;
+        max-height: 75vh;
+    }
 }
