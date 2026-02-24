@@ -220,3 +220,44 @@
     font-size: 13px;
     color: #64748b;
 }
+
+/* =========================================
+   PWA APP MODE OPTIMIZATION
+========================================= */
+
+/* Full height layout */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Prevent bounce scroll (mobile) */
+body {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Safe area for iPhone */
+body {
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
+}
+
+/* Remove text highlight on tap */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Better button touch */
+button {
+    touch-action: manipulation;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    transition: background 0.3s ease;
+}
