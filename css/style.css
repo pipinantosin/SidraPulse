@@ -176,3 +176,47 @@
         font-size: 10px;
     }
 }
+
+/* =========================================
+   FOOTER PROFESSIONAL
+========================================= */
+
+.sidra-footer {
+    background: #0f172a;
+    color: #cbd5e1;
+    padding: 40px 20px;
+    margin-top: 80px;
+    border-top: 1px solid #1e293b;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.sidra-footer h3 {
+    color: #38bdf8;
+    margin-bottom: 10px;
+}
+
+.sidra-footer a {
+    display: block;
+    color: #94a3b8;
+    text-decoration: none;
+    margin-bottom: 6px;
+    transition: 0.2s ease;
+}
+
+.sidra-footer a:hover {
+    color: #38bdf8;
+}
+
+.footer-right p {
+    margin: 4px 0;
+    font-size: 13px;
+    color: #64748b;
+}
