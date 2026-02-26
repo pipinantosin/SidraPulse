@@ -8,8 +8,8 @@
 const JSON_PATH = "data/pools.json";
 const poolCards = new Map();
 let poolsList = [];
-let autoRefresh = true;
-let refreshInterval = null;
+let autoRefresh = false; // ✅ default pause
+
 window.selectedBaseCurrency = "WSDA";
 
 /* =====================================================
@@ -548,28 +548,40 @@ function filterPoolsBySymbol(symbol) {
 }
 
 /* =====================================================
-   AUTO REFRESH CONTROL
+   AUTO REFRESH CONTROL (SAFE VERSION)
 ===================================================== */
+
+let refreshInterval = null;
+
 function startAutoRefresh() {
-    if (refreshInterval) clearInterval(refreshInterval);
+
+    // cegah interval dobel
+    if (refreshInterval) return;
+
+    autoRefresh = true;
 
     refreshInterval = setInterval(() => {
-        if (autoRefresh) {
-            const select = document.getElementById("pool-filter");
-            const sort = document.getElementById("pool-sort");
-            updateDashboard();
-        }
-    }, 15000);
+
+        if (!autoRefresh) return;
+
+        updateDashboard();
+
+    }, 15000); // 15 detik
 }
 
 function stopAutoRefresh() {
+
     autoRefresh = false;
+
+    if (refreshInterval) {
+        clearInterval(refreshInterval);
+        refreshInterval = null;
+    }
 }
 
 function resumeAutoRefresh() {
-    autoRefresh = true;
+    startAutoRefresh();
 }
-
 /* =====================================================
    EVENT LISTENERS - FINAL STABLE VERSION
 ===================================================== */
@@ -655,23 +667,28 @@ refreshBtn?.addEventListener("click", async () => {
 
     /* ================= PAUSE / RESUME ================= */
 
-    toggleBtn?.addEventListener("click", () => {
+    /* ================= PAUSE / RESUME ================= */
 
-        autoRefresh = !autoRefresh;
+toggleBtn?.addEventListener("click", () => {
 
-        const icon = toggleBtn.querySelector("i");
+    autoRefresh = !autoRefresh;
 
-        if (!icon) return;
+    const icon = toggleBtn.querySelector("i");
+    if (!icon) return;
 
-        if (autoRefresh) {
-            icon.classList.remove("fa-play");
-            icon.classList.add("fa-pause");
-        } else {
-            icon.classList.remove("fa-pause");
-            icon.classList.add("fa-play");
-        }
-    });
+    if (autoRefresh) {
 
-    // 5️⃣ Start auto refresh (LAST)
-    startAutoRefresh();
+        icon.classList.remove("fa-play");
+        icon.classList.add("fa-pause");
+
+        startAutoRefresh(); // ✅ mulai hanya saat play
+
+    } else {
+
+        icon.classList.remove("fa-pause");
+        icon.classList.add("fa-play");
+
+        stopAutoRefresh(); // ✅ benar-benar stop
+    }
 });
+}); // ✅ close window load
