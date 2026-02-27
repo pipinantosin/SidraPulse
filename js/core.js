@@ -22,6 +22,9 @@ const CONFIG = {
         "https://rpc3.sidrachain.com"
     ],
 
+    MULTICALL_ADDRESS:
+        "0xcA11bde05977b3631167028862bE2a173976CA11",
+
     ROTATE_EVERY: 40,
     MAX_RETRY: 4,
     TIMEOUT: 12000,
