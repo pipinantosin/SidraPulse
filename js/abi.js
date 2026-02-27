@@ -9,3 +9,7 @@ const ERC20_ABI = [
     "function decimals() view returns (uint8)",
     "function symbol() view returns (string)"
 ];
+
+const MULTICALL_ABI = [
+  "function aggregate(tuple(address target, bytes callData)[] calls) public view returns (uint256 blockNumber, bytes[] returnData)"
+];
