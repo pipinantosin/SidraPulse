@@ -5,11 +5,22 @@
  * =====================================================
  */
 
+/* =====================================================
+   SIDRAPULSE DATA CONFIG
+   (RPC handled by core.js)
+===================================================== */
+
+//  RPC sekarang dihandle oleh core.js
+// jangan buat RPC rotator lagi di dashboard
+
 const JSON_PATH = "data/pools.json";
+
 const poolCards = new Map();
 let poolsList = [];
-let autoRefresh = false; // ✅ default pause
 
+let autoRefresh = false; // default pause
+
+// BASE GLOBAL
 window.selectedBaseCurrency = "WSDA";
 
 /* =====================================================
@@ -260,13 +271,7 @@ if (poolValue !== "all") {
 // FETCH DATA
 // ==========================================
 
-const results = await Promise.all(
-    filteredPools.map(pool =>
-        fetchPoolData(pool.address)
-            .then(data => ({ pool, data }))
-            .catch(() => ({ pool, data: { error: true } }))
-    )
-);
+const results = await fetchPoolsSmart(filteredPools);
 
 // ==========================================
 // SORT (PAKAI FINAL PRICE YANG SUDAH DIKONVERSI)
@@ -581,6 +586,50 @@ function stopAutoRefresh() {
 
 function resumeAutoRefresh() {
     startAutoRefresh();
+}
+
+/* =====================================================
+   SMART FETCH QUEUE
+===================================================== */
+
+async function fetchPoolsSmart(pools, batchSize = 5) {
+
+    const results = [];
+
+    for (let i = 0; i < pools.length; i += batchSize) {
+
+        const batch = pools.slice(i, i + batchSize);
+
+        const res = await Promise.all(
+            batch.map(pool =>
+                fetchPoolData(pool.address)
+                    .then(data => ({ pool, data }))
+                    .catch(() => ({ pool, data:{error:true} }))
+            )
+        );
+
+        results.push(...res);
+
+        // jeda anti RPC limit
+        await new Promise(r => setTimeout(r, 700));
+    }
+
+    return results;
+}
+
+let lastRefreshTime = 0;
+
+function smartRefreshAllowed() {
+
+    const now = Date.now();
+
+    // minimal jarak refresh
+    if (now - lastRefreshTime < 12000) {
+        return false;
+    }
+
+    lastRefreshTime = now;
+    return true;
 }
 /* =====================================================
    EVENT LISTENERS - FINAL STABLE VERSION
