@@ -268,10 +268,20 @@ if (poolValue !== "all") {
 }
 
 // ==========================================
-// FETCH DATA
+// FETCH DATA (SMART ENGINE)
 // ==========================================
 
-const results = await fetchPoolsSmart(filteredPools);
+let results = [];
+
+try {
+
+    results = await fetchPoolsSmart(filteredPools);
+
+} catch (e) {
+
+    console.error("Fetch pools error:", e);
+
+}
 
 // ==========================================
 // SORT (PAKAI FINAL PRICE YANG SUDAH DIKONVERSI)
@@ -611,7 +621,7 @@ async function fetchPoolsSmart(pools, batchSize = 5) {
         results.push(...res);
 
         // jeda anti RPC limit
-        await new Promise(r => setTimeout(r, 700));
+        await new Promise(r => setTimeout(r, 1200));
     }
 
     return results;
