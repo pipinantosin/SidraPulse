@@ -1,78 +1,178 @@
 /* =====================================================
    SIDRAPULSE CORE ENGINE
-   Centralized App Config + Provider + Utils
+   STABLE RPC ROTATOR (FINAL)
 ===================================================== */
 
-window.SIDRAPULSE = (() => {
+(function () {
 
-    const CONFIG = {
-        RPC_URL: "https://node.sidrachain.com/",
-        REQUEST_TIMEOUT: 10000,
-        MAX_RETRY: 2,
-        AUTO_REFRESH_INTERVAL: 15000,
-        LIQUIDITY_SCALE: 1e12
-    };
+if (typeof ethers === "undefined") {
+    console.error("ethers.js belum load");
+    return;
+}
 
-    /* =============================
-       PROVIDER (Singleton)
-    ============================== */
-    const provider = new ethers.providers.JsonRpcProvider(CONFIG.RPC_URL);
+/* =====================================
+   CONFIG
+===================================== */
 
-    /* =============================
-       TIMEOUT WRAPPER
-    ============================== */
-    function withTimeout(promise, ms = CONFIG.REQUEST_TIMEOUT) {
-        return Promise.race([
-            promise,
-            new Promise((_, reject) =>
-                setTimeout(() => reject(new Error("Timeout")), ms)
+const CONFIG = {
+    RPC_LIST: [
+        "https://node.sidrachain.com",
+        "https://rpc1.sidrachain.com",
+        "https://rpc2.sidrachain.com",
+        "https://rpc3.sidrachain.com"
+    ],
+
+    ROTATE_EVERY: 40,
+    MAX_RETRY: 4,
+    TIMEOUT: 12000,
+    COOLDOWN: 30000,
+};
+
+/* =====================================
+   PROVIDER CACHE
+===================================== */
+
+const providers = [];
+const cooldown = {};
+
+let rpcIndex = 0;
+let rpcHit = 0;
+
+/* =====================================
+   INIT PROVIDERS (ONLY ONCE)
+===================================== */
+
+CONFIG.RPC_LIST.forEach((url, i) => {
+
+    try {
+
+        providers[i] =
+            new ethers.providers.StaticJsonRpcProvider(
+                url,
+                { name: "sidra", chainId: 97453 }
+            );
+
+        console.log("RPC ready:", url);
+
+    } catch (e) {
+
+        console.warn("RPC init fail:", url);
+        cooldown[i] = Date.now();
+    }
+
+});
+
+/* =====================================
+   GET ACTIVE PROVIDER
+===================================== */
+
+function getProvider() {
+
+    rpcHit++;
+
+    if (rpcHit % CONFIG.ROTATE_EVERY === 0) {
+        rpcIndex =
+            (rpcIndex + 1) % providers.length;
+    }
+
+    for (let i = 0; i < providers.length; i++) {
+
+        const idx =
+            (rpcIndex + i) % providers.length;
+
+        if (!providers[idx]) continue;
+
+        const lastFail = cooldown[idx];
+
+        if (
+            lastFail &&
+            Date.now() - lastFail < CONFIG.COOLDOWN
+        ) continue;
+
+        rpcIndex = idx;
+        return providers[idx];
+    }
+
+    throw new Error("All RPC cooldown");
+}
+
+/* =====================================
+   TIMEOUT WRAPPER
+===================================== */
+
+function withTimeout(promise) {
+
+    return Promise.race([
+        promise,
+        new Promise((_, reject) =>
+            setTimeout(
+                () => reject(new Error("timeout")),
+                CONFIG.TIMEOUT
             )
-        ]);
-    }
+        )
+    ]);
+}
 
-    /* =============================
-       RETRY WRAPPER
-    ============================== */
-    async function withRetry(fn, retry = 0) {
-        try {
-            return await fn();
-        } catch (err) {
-            if (retry < CONFIG.MAX_RETRY) {
-                return withRetry(fn, retry + 1);
-            }
-            throw err;
+/* =====================================
+   RETRY + AUTO SWITCH
+===================================== */
+
+async function withRetry(fn, retry = 0) {
+
+    try {
+
+        const provider = getProvider();
+
+        return await withTimeout(
+            fn(provider)
+        );
+
+    } catch (err) {
+
+        const msg =
+            (err.message || "").toLowerCase();
+
+        if (
+            msg.includes("fetch") ||
+            msg.includes("timeout") ||
+            msg.includes("network") ||
+            msg.includes("429")
+        ) {
+
+            cooldown[rpcIndex] = Date.now();
+
+            rpcIndex =
+                (rpcIndex + 1) % providers.length;
+
+            console.warn(
+                "RPC failed → switching",
+                rpcIndex
+            );
         }
+
+        if (retry < CONFIG.MAX_RETRY) {
+
+            await new Promise(r =>
+                setTimeout(r, 900)
+            );
+
+            return withRetry(fn, retry + 1);
+        }
+
+        throw err;
     }
+}
 
-    /* =============================
-       SAFE BIGINT POWER
-    ============================== */
-    function pow10(dec) {
-        return 10n ** BigInt(dec);
-    }
+/* =====================================
+   EXPORT GLOBAL
+===================================== */
 
-    /* =============================
-       FORMAT LIQUIDITY
-    ============================== */
-    function formatLiquidity(num) {
+window.SIDRAPULSE = {
+    getProvider,
+    withRetry,
+    CONFIG
+};
 
-        if (!num) return "-";
-
-        const scaled = Number(num) / CONFIG.LIQUIDITY_SCALE;
-
-        if (scaled < 1_000_000_000) return scaled.toFixed(2);
-        if (scaled < 1_000_000_000_000) return (scaled / 1_000_000_000).toFixed(2) + "K";
-        if (scaled < 1_000_000_000_000_000) return (scaled / 1_000_000_000_000).toFixed(2) + "M";
-        return (scaled / 1_000_000_000_000_000_000_000).toFixed(2) + "B";
-    }
-
-    return {
-        CONFIG,
-        provider,
-        withTimeout,
-        withRetry,
-        pow10,
-        formatLiquidity
-    };
+console.log("SIDRAPULSE CORE READY");
 
 })();
