@@ -204,6 +204,10 @@ walletToggle.addEventListener("click", () => {
 });
 </script>
 
-
+<script>
+window.onerror = function(msg, src, line, col, err) {
+    console.log("REAL ERROR:", msg, src, line);
+};
+</script>
 </body>
 </html>
